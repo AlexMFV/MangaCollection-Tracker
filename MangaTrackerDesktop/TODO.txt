@@ -1,0 +1,8 @@
+---First opening---
+Index and split files into 1000 entries
+After initial Indexation create a file with number of files (to compare)
+
+---Consecutive openings---
+Check if file number checker has the same value, with the number of files currently present in the dir
+	If the number is the same progress to the app and load stuff
+	If the number is different ask the user to reindex (Yes/No) and delete all the files in directory before reindexing
