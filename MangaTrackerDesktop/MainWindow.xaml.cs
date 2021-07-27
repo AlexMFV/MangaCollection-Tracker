@@ -41,8 +41,12 @@ namespace MangaTrackerDesktop
 
         async public void InitialSteps()
         {
-            await DatabaseFullReindex();
-            lstMangas.Items.Add(mangas.Count);
+            if (Cache.isDBCorrupted())
+            {
+                await DatabaseFullReindex();
+            }
+
+            FillListWithMangas();
         }
 
         public Mangas RequestAPIMangas(string _url)
@@ -92,7 +96,7 @@ namespace MangaTrackerDesktop
             {
                 switch (props)
                 {
-                    case MangaProperties.ID: mangas[mangas.Count - 1].Id = value; break;
+                    case MangaProperties.ID: mangas[mangas.Count - 1].Id = int.Parse(value); break;
                     case MangaProperties.GID: mangas[mangas.Count - 1].Gid = value; break;
                     case MangaProperties.TYPE: mangas[mangas.Count - 1].Type = value; break;
                     case MangaProperties.NAME: mangas[mangas.Count - 1].Name = value; break;
@@ -114,10 +118,26 @@ namespace MangaTrackerDesktop
 
                 string fullDatabase = "https://www.animenewsnetwork.com/encyclopedia/reports.xml?id=155&type=manga&nlist=all";
                 Mangas fullDB = RequestAPIMangas(fullDatabase);
+                List<Manga> mangaList = fullDB.ToList().OrderBy(x => x.Id).ToList();
+
+                fullDB = new Mangas();
+                for(int i = 0; i < mangaList.Count; i++)
+                    fullDB.Add(mangaList[i]);
+
+                List<Mangas> splittedDB = fullDB.Partition(Globals.NUM_PARTITION);
+                Cache.SaveMangaListPartitioned(splittedDB);
+                Cache.LoadOrderedDB();
+
                 return true;
             }
 
             return false;
+        }
+
+        async public void FillListWithMangas()
+        {
+            for(int i = 0; i < Globals.MANGAS.Count; i++)
+                lstMangas.Items.Add(Globals.MANGAS[i].Name);
         }
     }
 }

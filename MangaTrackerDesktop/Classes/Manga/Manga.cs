@@ -9,7 +9,7 @@ namespace MangaTrackerDesktop
     public class Manga
     {
         /* COMMON */
-        private string id;
+        private int id;
         private string gid;
         private string type;
         private string name;
@@ -29,7 +29,7 @@ namespace MangaTrackerDesktop
 
         private List<Author> authors;
 
-        public string Id { get => id; set => id = value; }
+        public int Id { get => id; set => id = value; }
         public string Gid { get => gid; set => gid = value; }
         public string Type { get => type; set => type = value; }
         public string Name { get => name; set => name = value; }
@@ -45,7 +45,7 @@ namespace MangaTrackerDesktop
 
         public Manga() { }
 
-        public Manga(string id, string gid, string type, string name, string precision, string vintage)
+        public Manga(int id, string gid, string type, string name, string precision, string vintage)
         {
             Id = id;
             Gid = gid;
@@ -55,7 +55,7 @@ namespace MangaTrackerDesktop
             Vintage = vintage;
         }
 
-        public Manga(string id, string gid, string type, string name, string precision, string vintage, string imgURL, string jpTitle, List<string> genres, string plotSummary, string jpSite, string enSite, List<Author> authors) : this(id, gid, type, name, precision, vintage)
+        public Manga(int id, string gid, string type, string name, string precision, string vintage, string imgURL, string jpTitle, List<string> genres, string plotSummary, string jpSite, string enSite, List<Author> authors) : this(id, gid, type, name, precision, vintage)
         {
             this.imgURL = imgURL;
             this.jpTitle = jpTitle;
