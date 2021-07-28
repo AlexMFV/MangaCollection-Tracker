@@ -8,7 +8,8 @@ namespace MangaTrackerDesktop
 {
     public static class Globals
     {
-        public static Mangas MANGAS = new Mangas();
+        public static Mangas ALL_MANGAS = new Mangas();
+        public static Mangas MANGA_LIST = new Mangas();
         public static string APPDATA_DIR = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         public static int NUM_PARTITION = 1000;
     }

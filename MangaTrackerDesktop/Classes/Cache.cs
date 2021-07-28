@@ -111,8 +111,10 @@ namespace MangaTrackerDesktop
             LoadOrderedDB();
             int count = LoadChecksum();
 
-            if (Globals.MANGAS == null || Globals.MANGAS.Count != count)
+            if (Globals.ALL_MANGAS == null || Globals.ALL_MANGAS.Count != count)
                 return true;
+
+            Globals.MANGA_LIST = Globals.ALL_MANGAS;
             return false;
         }
 
@@ -148,7 +150,7 @@ namespace MangaTrackerDesktop
 
         public static void LoadOrderedDB()
         {
-            Globals.MANGAS = OrderMangasByName(LoadMangaList());
+            Globals.ALL_MANGAS = OrderMangasByName(LoadMangaList());
         }
 
         private static void SaveChecksum(int _num)

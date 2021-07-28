@@ -50,12 +50,12 @@ namespace MangaTrackerDesktop
             }
 
             FillListWithMangas(0);
-            FillPagesLabel(Globals.MANGAS);
+            FillPagesLabel();
         }
 
-        public void FillPagesLabel(Mangas mangas)
+        public void FillPagesLabel()
         {
-            maxPages = (int)Math.Ceiling((double)mangas.Count / per_page);
+            maxPages = (int)Math.Ceiling((double)Globals.MANGA_LIST.Count / per_page);
             nupPage.Maximum = maxPages;
             lblPages.Content = $"Page {currPage + 1} / {maxPages}";
         }
@@ -149,21 +149,10 @@ namespace MangaTrackerDesktop
         {
             for(int i = (per_page*page); i < (per_page * page+ per_page); i++)
             {
-                if (i >= Globals.MANGAS.Count)
+                if (i >= Globals.MANGA_LIST.Count)
                     return;
 
-                lstMangas.Items.Add(Globals.MANGAS[i].Name);
-            }
-        }
-
-        async public void FillListWithMangas(int page, Mangas customList)
-        {
-            for (int i = (per_page * page); i < (per_page * page + per_page); i++)
-            {
-                if (i >= customList.Count)
-                    return;
-
-                lstMangas.Items.Add(customList[i].Name);
+                lstMangas.Items.Add(Globals.MANGA_LIST[i].Name);
             }
         }
 
@@ -198,14 +187,7 @@ namespace MangaTrackerDesktop
         {
             lstMangas.Items.Clear();
             FillListWithMangas(currPage);
-            FillPagesLabel(Globals.MANGAS);
-        }
-
-        public void UpdatePage(Mangas customList)
-        {
-            lstMangas.Items.Clear();
-            FillListWithMangas(currPage, customList);
-            FillPagesLabel(customList);
+            FillPagesLabel();
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
@@ -215,13 +197,14 @@ namespace MangaTrackerDesktop
                 if(txtSearchTitle.Text == "")
                 {
                     currPage = 0;
+                    Globals.MANGA_LIST = Globals.ALL_MANGAS;
                     UpdatePage();
                 }
                 else
                 {
                     currPage = 0;
-                    Mangas filterList = Globals.MANGAS.ToObject(Globals.MANGAS.ToList().Where(x => x.Name.ToLower().Contains(txtSearchTitle.Text.ToLower())).ToList());
-                    UpdatePage(filterList);
+                    Globals.MANGA_LIST = Globals.ALL_MANGAS.ToObject(Globals.ALL_MANGAS.ToList().Where(x => x.Name.ToLower().Contains(txtSearchTitle.Text.ToLower())).ToList());
+                    UpdatePage();
                 }
             }
         }
