@@ -32,6 +32,9 @@ namespace MangaTrackerDesktop
         Mangas mangas = new Mangas();
         MangaProperties props = MangaProperties.NONE;
         bool haltOp = false;
+        int per_page = 500;
+        int maxPages;
+        int currPage = 0;
 
         public MainWindow()
         {
@@ -46,7 +49,15 @@ namespace MangaTrackerDesktop
                 await DatabaseFullReindex();
             }
 
-            FillListWithMangas();
+            FillListWithMangas(0);
+            FillPagesLabel(Globals.MANGAS);
+        }
+
+        public void FillPagesLabel(Mangas mangas)
+        {
+            maxPages = (int)Math.Ceiling((double)mangas.Count / per_page);
+            nupPage.Maximum = maxPages;
+            lblPages.Content = $"Page {currPage + 1} / {maxPages}";
         }
 
         public Mangas RequestAPIMangas(string _url)
@@ -134,10 +145,85 @@ namespace MangaTrackerDesktop
             return false;
         }
 
-        async public void FillListWithMangas()
+        async public void FillListWithMangas(int page)
         {
-            for(int i = 0; i < Globals.MANGAS.Count; i++)
+            for(int i = (per_page*page); i < (per_page * page+ per_page); i++)
+            {
+                if (i >= Globals.MANGAS.Count)
+                    return;
+
                 lstMangas.Items.Add(Globals.MANGAS[i].Name);
+            }
+        }
+
+        async public void FillListWithMangas(int page, Mangas customList)
+        {
+            for (int i = (per_page * page); i < (per_page * page + per_page); i++)
+            {
+                if (i >= customList.Count)
+                    return;
+
+                lstMangas.Items.Add(customList[i].Name);
+            }
+        }
+
+        private void btnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            if (currPage > 0)
+            {
+                this.currPage--;
+                UpdatePage();
+            }
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            if(currPage+1 < maxPages)
+            {
+                this.currPage++;
+                UpdatePage();
+            }
+        }
+
+        private void btnGoTo_Click(object sender, RoutedEventArgs e)
+        {
+            if ((int)nupPage.Value - 1 != currPage)
+            {
+                this.currPage = (int)nupPage.Value - 1;
+                UpdatePage();
+            }
+        }
+
+        public void UpdatePage()
+        {
+            lstMangas.Items.Clear();
+            FillListWithMangas(currPage);
+            FillPagesLabel(Globals.MANGAS);
+        }
+
+        public void UpdatePage(Mangas customList)
+        {
+            lstMangas.Items.Clear();
+            FillListWithMangas(currPage, customList);
+            FillPagesLabel(customList);
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                if(txtSearchTitle.Text == "")
+                {
+                    currPage = 0;
+                    UpdatePage();
+                }
+                else
+                {
+                    currPage = 0;
+                    Mangas filterList = Globals.MANGAS.ToObject(Globals.MANGAS.ToList().Where(x => x.Name.ToLower().Contains(txtSearchTitle.Text.ToLower())).ToList());
+                    UpdatePage(filterList);
+                }
+            }
         }
     }
 }
