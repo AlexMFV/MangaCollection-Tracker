@@ -1,0 +1,19 @@
+﻿<Page x:Class="MangaTrackerDesktop.MangaInfo"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MangaTrackerDesktop"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Manga Info">
+
+    <Grid>
+        <Image x:Name="imgImage" Width="130" Height="150" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+        <Label x:Name="lblTitle" Margin="150,10,10,405" FontWeight="Bold" FontSize="18" VerticalContentAlignment="Top">Title</Label>
+        <Label x:Name="lblJpnName" Height="30" Margin="150,50,10,370" FontSize="14" VerticalContentAlignment="Top">Original Title: xxx</Label>
+        <Label x:Name="lblType" Height="30" Margin="150,80,10,340" FontSize="14" VerticalContentAlignment="Top">Type: manga</Label>
+        <Label x:Name="lblFirstPub" Height="30" Margin="150,112,10,308" FontSize="14" VerticalContentAlignment="Top">Publication Date: xx/xx/xxxx</Label>
+        <Button Click="Button_Click" Width="80" Height="30" Content="Go Back" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Button>
+    </Grid>
+</Page>

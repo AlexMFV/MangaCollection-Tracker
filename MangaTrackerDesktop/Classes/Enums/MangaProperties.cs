@@ -14,6 +14,21 @@ namespace MangaTrackerDesktop
         NAME,
         PRECISION,
         VINTAGE,
+        INFO, 
+        NEWS,
+        RELEASE,
+        RATINGS,
+        STAFF,
+        NONE
+    }
+
+    public enum MangaPropertyInfo
+    {
+        PICTURE,
+        ALT_TITLE,
+        GENRES,
+        PLOTSUMMARY,
+        //AUTHOR_ID, //Or Person_id
         NONE
     }
 }

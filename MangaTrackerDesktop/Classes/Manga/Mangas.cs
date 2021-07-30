@@ -40,6 +40,11 @@ namespace MangaTrackerDesktop
             return mangas;
         }
 
+        public Manga GetByID(int _id)
+        {
+            return ((Mangas)List).ToList().First(x => x.Id == _id);
+        }
+
         public List<Mangas> Partition(int number)
         {
             List<Mangas> toReturn = new List<Mangas>();

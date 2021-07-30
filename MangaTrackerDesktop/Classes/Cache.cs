@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SqlServer.Management.SqlParser.Parser;
 using System.Reflection;
+using Microsoft.SqlServer.Management.Assessment.Configuration;
 
 namespace MangaTrackerDesktop
 {
@@ -29,10 +30,10 @@ namespace MangaTrackerDesktop
 
             int aux = 0;
 
-            for(int idx = 0; idx < mangaCol.Count; idx++)
+            for (int idx = 0; idx < mangaCol.Count; idx++)
             {
                 //From Accounts Collection To JSON To File
-                using (StreamWriter file = File.CreateText(cacheDir + "\\" + $"mangaDB-{mangaCol[idx][0].Id}-{mangaCol[idx][mangaCol[idx].Count-1].Id}.json"))
+                using (StreamWriter file = File.CreateText(cacheDir + "\\" + $"mangaDB-{mangaCol[idx][0].Id}-{mangaCol[idx][mangaCol[idx].Count - 1].Id}.json"))
                 using (JsonTextWriter writer = new JsonTextWriter(file))
                 {
                     JArray arr = new JArray();
@@ -41,9 +42,9 @@ namespace MangaTrackerDesktop
                     {
                         JObject toAdd = new JObject();
 
-                        foreach(var prop in manga.GetType().GetProperties())
+                        foreach (var prop in manga.GetType().GetProperties())
                         {
-                            if(prop.Name == "Id")
+                            if (prop.Name == "Id")
                                 toAdd.Add(prop.Name, (int)prop.GetValue(manga));
                             else
                                 toAdd.Add(prop.Name, (string)prop.GetValue(manga));
@@ -85,7 +86,7 @@ namespace MangaTrackerDesktop
                         {
                             JArray arr = JArray.Parse(content);
 
-                            foreach(JObject obj in arr)
+                            foreach (JObject obj in arr)
                             {
                                 Manga manga = new Manga();
                                 manga = LoadMangaProperties(manga, obj);
@@ -106,6 +107,67 @@ namespace MangaTrackerDesktop
             return null;
         }
 
+        public static void SaveSingleManga(Manga manga)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "titlesDB");
+
+            if (!Directory.Exists(cacheDir))
+                Directory.CreateDirectory(cacheDir);
+
+            using (StreamWriter file = File.CreateText(cacheDir + "\\" + $"title_{manga.Id}.json"))
+            using (JsonTextWriter writer = new JsonTextWriter(file))
+            {
+                JObject obj = new JObject();
+                obj.Add("id", manga.Id);
+                obj.Add("gid", manga.Gid);
+                obj.Add("type", manga.Type);
+                obj.Add("name", manga.Name);
+                obj.Add("precision", manga.Precision);
+                obj.Add("vintage", manga.Vintage);
+                obj.Add("imgurl", manga.ImgURL); //Change this to image later (for offline use)
+                obj.Add("jptitle", manga.JpTitle);
+                obj.Add("plot", manga.PlotSummary);
+                obj.Add("jpsite", manga.JpSite);
+                obj.Add("ensite", manga.EnSite);
+                obj.WriteTo(writer);
+            }
+        }
+
+        public static Manga LoadSingleManga(int _id)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "titlesDB");
+
+            if (!Directory.Exists(cacheDir))
+                Directory.CreateDirectory(cacheDir);
+
+            string file = cacheDir + $"\\title_{_id}.json";
+            Manga manga = new Manga();
+
+            if (File.Exists(file))
+            {
+                string content = File.ReadAllText(file);
+                if (content != "")
+                {
+                    JObject obj = JObject.Parse(content);
+                    manga.Id = int.Parse(obj.Property("id").Value.ToString());
+                    manga.Gid = obj.Property("gid").Value.ToString();
+                    manga.Type = obj.Property("type").Value.ToString();
+                    manga.Name = obj.Property("name").Value.ToString();
+                    manga.Precision = obj.Property("precision").Value.ToString();
+                    manga.Vintage = obj.Property("vintage").Value.ToString();
+                    manga.ImgURL = obj.Property("imgurl").Value.ToString();
+                    manga.JpTitle = obj.Property("jptitle").Value.ToString();
+                    manga.PlotSummary = obj.Property("plot").Value.ToString();
+                    manga.JpSite = obj.Property("jpsite").Value.ToString();
+                    manga.EnSite = obj.Property("ensite").Value.ToString();
+                    return manga;
+                }
+            }
+
+            return null;
+        }
+
+
         public static bool isDBCorrupted()
         {
             LoadOrderedDB();
@@ -120,7 +182,7 @@ namespace MangaTrackerDesktop
 
         public static Mangas OrderMangasByName(Mangas mangas)
         {
-            if(mangas != null)
+            if (mangas != null)
                 return mangas.ToObject(mangas.ToList().OrderBy(item => item.Name).ToList());
             return null;
         }
@@ -151,6 +213,7 @@ namespace MangaTrackerDesktop
         public static void LoadOrderedDB()
         {
             Globals.ALL_MANGAS = OrderMangasByName(LoadMangaList());
+            Globals.MANGA_LIST = Globals.ALL_MANGAS;
         }
 
         private static void SaveChecksum(int _num)
@@ -171,7 +234,7 @@ namespace MangaTrackerDesktop
 
         private static Manga LoadMangaProperties(Manga manga, JObject toLoad)
         {
-            foreach(PropertyInfo prop in manga.GetType().GetProperties())
+            foreach (PropertyInfo prop in manga.GetType().GetProperties())
             {
                 switch (prop.Name)
                 {
