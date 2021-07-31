@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -79,7 +80,7 @@ namespace MangaTrackerDesktop
                 case "info": SetInfoTag(reader); break;
                 //case "news": props = MangaProperties.NEWS; write = true; break;
                 //case "release": props = MangaProperties.RELEASE; write = true; break;
-                //case "ratings": props = MangaProperties.RATINGS; write = true; break;
+                case "ratings": SetRatingsTag(reader); break;
                 //case "staff": props = MangaProperties.STAFF; write = true; break; //Task or person also available
                 default: write = false; propInfo = MangaPropertyInfo.NONE; break;
             }
@@ -106,6 +107,12 @@ namespace MangaTrackerDesktop
                             manga.JpSite = reader.GetAttribute("href");
                     break;
             }
+        }
+
+        public static void SetRatingsTag(XmlReader reader)
+        {
+            manga.Rating = Convert.ToDouble(reader.GetAttribute("weighted_score"), CultureInfo.InvariantCulture);
+            manga.Rating_Votes = int.Parse(reader.GetAttribute("nb_votes"));
         }
 
         public static void ResumeOps(string name)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace MangaTrackerDesktop
 {
@@ -23,6 +24,8 @@ namespace MangaTrackerDesktop
         private string plotSummary; //Japanese Title
         private string jpSite; //Japanese Website
         private string enSite; //English Website
+        private double rating;
+        private int rating_votes;
 
         //public List<MangaReleases>; //Dates, links and names of releases
         //public List<MangaNews> //Dates, links and description
@@ -42,6 +45,8 @@ namespace MangaTrackerDesktop
         public string JpSite { get => jpSite; set => jpSite = value; }
         public string EnSite { get => enSite; set => enSite = value; }
         public List<Author> Authors { get => authors; set => authors = value; }
+        public double Rating { get => rating; set => rating = value; }
+        public int Rating_Votes { get => rating_votes; set => rating_votes = value; }
 
         public Manga() { }
 
@@ -55,7 +60,7 @@ namespace MangaTrackerDesktop
             Vintage = vintage;
         }
 
-        public Manga(int id, string gid, string type, string name, string precision, string vintage, string imgURL, string jpTitle, List<string> genres, string plotSummary, string jpSite, string enSite, List<Author> authors) : this(id, gid, type, name, precision, vintage)
+        public Manga(int id, string gid, string type, string name, string precision, string vintage, string imgURL, string jpTitle, List<string> genres, string plotSummary, string jpSite, string enSite, List<Author> authors, double rating, int ratingvotes) : this(id, gid, type, name, precision, vintage)
         {
             this.imgURL = imgURL;
             this.jpTitle = jpTitle;
@@ -64,6 +69,8 @@ namespace MangaTrackerDesktop
             this.jpSite = jpSite;
             this.enSite = enSite;
             this.authors = authors;
+            this.rating = rating;
+            this.rating_votes = ratingvotes;
         }
     }
 }

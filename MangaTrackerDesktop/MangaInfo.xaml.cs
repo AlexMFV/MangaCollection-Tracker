@@ -59,6 +59,9 @@ namespace MangaTrackerDesktop
                 lblType.Content = $"Type: {manga.Type}";
                 lblJpnName.Content = $"Original Name: {manga.JpTitle}";
                 lblFirstPub.Content = $"Publication Date: {manga.Vintage}";
+                txtPlotSum.Text = manga.PlotSummary;
+                lblRatingScore.Content = $"{Math.Round(manga.Rating, 2)}/10";
+                lblRatingVotes.Content = $"{manga.Rating_Votes} users";
             }
             else
             {
