@@ -149,5 +149,10 @@ namespace MangaTrackerDesktop
         {
             this.frame.Content = new MangaInfo(frame.Content, frame, int.Parse(((ListViewItem)lstMangas.Items[lstMangas.SelectedIndex]).Tag.ToString()));
         }
+
+        private void btnLibrary_Click(object sender, RoutedEventArgs e)
+        {
+            this.frame.Content = new Library(frame.Content, frame);
+        }
     }
 }
