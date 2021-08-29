@@ -17,6 +17,8 @@ namespace MangaTrackerDesktop
         static MangaProperties props = MangaProperties.NONE;
         static MangaPropertyInfo propInfo = MangaPropertyInfo.NONE;
         static bool haltOp = false;
+        static Releases releases;
+        static Release release;
 
         public static Mangas RequestAPIMangas(string _url)
         {
@@ -43,6 +45,7 @@ namespace MangaTrackerDesktop
             settings.Async = true;
 
             XmlReader reader = XmlReader.Create(_url, settings);
+            releases = new Releases();
 
             while (reader.Read())
             {
@@ -55,6 +58,7 @@ namespace MangaTrackerDesktop
                 }
             }
 
+            manga.Releases = releases;
             return manga;
         }
 
@@ -79,7 +83,7 @@ namespace MangaTrackerDesktop
             {
                 case "info": SetInfoTag(reader); break;
                 //case "news": props = MangaProperties.NEWS; write = true; break;
-                //case "release": props = MangaProperties.RELEASE; write = true; break;
+                case "release": SetReleaseTag(reader); break;
                 case "ratings": SetRatingsTag(reader); break;
                 //case "staff": props = MangaProperties.STAFF; write = true; break; //Task or person also available
                 default: write = false; propInfo = MangaPropertyInfo.NONE; break;
@@ -115,6 +119,17 @@ namespace MangaTrackerDesktop
             manga.Rating_Votes = int.Parse(reader.GetAttribute("nb_votes"));
         }
 
+        public static void SetReleaseTag(XmlReader reader)
+        {
+            release = new Release();
+
+            release.Release_date = DateTime.Parse(reader.GetAttribute("date"));
+            string url = (string)reader.GetAttribute("href");
+            release.Id = int.Parse(url.Substring(url.IndexOf('=') + 1));
+            propInfo = MangaPropertyInfo.RELEASE;
+            write = true;
+        }
+
         public static void ResumeOps(string name)
         {
             switch (name)
@@ -148,9 +163,29 @@ namespace MangaTrackerDesktop
                 {
                     case MangaPropertyInfo.ALT_TITLE: manga.JpTitle = value; break;
                     case MangaPropertyInfo.PLOTSUMMARY: manga.PlotSummary = value; break;
+                    case MangaPropertyInfo.RELEASE: CheckAndAddRelease(value); break;
                     default: break;
                 }
             }
+        }
+
+        public static void CheckAndAddRelease(string value)
+        {
+            release.Title = value;
+
+            if (value.Contains("(GN "))
+                release.IsGN = true;
+            else
+                release.IsGN = false;
+
+            releases.Add(release);
+        }
+
+        public static FavManga ConvertToFavorite(Manga manga)
+        {
+            if(manga is not null)
+                return new FavManga(manga.Id, manga.Name, manga.Releases.Count, 0, manga.ImgURL);
+            return new FavManga();
         }
     }
 }

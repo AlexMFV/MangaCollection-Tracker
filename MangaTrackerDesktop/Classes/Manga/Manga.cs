@@ -26,8 +26,8 @@ namespace MangaTrackerDesktop
         private string enSite; //English Website
         private double rating;
         private int rating_votes;
+        private Releases releases; //Dates, links and names of releases
 
-        //public List<MangaReleases>; //Dates, links and names of releases
         //public List<MangaNews> //Dates, links and description
 
         private List<Author> authors;
@@ -47,6 +47,7 @@ namespace MangaTrackerDesktop
         public List<Author> Authors { get => authors; set => authors = value; }
         public double Rating { get => rating; set => rating = value; }
         public int Rating_Votes { get => rating_votes; set => rating_votes = value; }
+        public Releases Releases { get => releases; set => releases = value; }
 
         public Manga() { }
 
@@ -60,7 +61,7 @@ namespace MangaTrackerDesktop
             Vintage = vintage;
         }
 
-        public Manga(int id, string gid, string type, string name, string precision, string vintage, string imgURL, string jpTitle, List<string> genres, string plotSummary, string jpSite, string enSite, List<Author> authors, double rating, int ratingvotes) : this(id, gid, type, name, precision, vintage)
+        public Manga(int id, string gid, string type, string name, string precision, string vintage, string imgURL, string jpTitle, List<string> genres, string plotSummary, string jpSite, string enSite, List<Author> authors, double rating, int ratingvotes, Releases releases) : this(id, gid, type, name, precision, vintage)
         {
             this.imgURL = imgURL;
             this.jpTitle = jpTitle;
@@ -71,6 +72,7 @@ namespace MangaTrackerDesktop
             this.authors = authors;
             this.rating = rating;
             this.rating_votes = ratingvotes;
+            this.releases = releases;
         }
     }
 }

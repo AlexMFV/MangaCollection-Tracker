@@ -44,6 +44,9 @@ namespace MangaTrackerDesktop
 
                         foreach (var prop in manga.GetType().GetProperties())
                         {
+                            if (prop.Name == "Releases")
+                                continue;
+
                             if (prop.Name == "Id" || prop.Name == "Rating_Votes")
                                 toAdd.Add(prop.Name, (int)prop.GetValue(manga));
                             else
@@ -132,6 +135,7 @@ namespace MangaTrackerDesktop
                 obj.Add("plot", manga.PlotSummary);
                 obj.Add("jpsite", manga.JpSite);
                 obj.Add("ensite", manga.EnSite);
+                obj.Add("releases", JsonConvert.SerializeObject(manga.Releases));
                 obj.Add("rating", manga.Rating);
                 obj.Add("rating_votes", manga.Rating_Votes);
                 obj.WriteTo(writer);
@@ -165,6 +169,7 @@ namespace MangaTrackerDesktop
                     manga.PlotSummary = obj.Property("plot").Value.ToString();
                     manga.JpSite = obj.Property("jpsite").Value.ToString();
                     manga.EnSite = obj.Property("ensite").Value.ToString();
+                    manga.Releases = JsonConvert.DeserializeObject<Releases>(obj.Property("releases").Value.ToString());
                     manga.Rating = double.Parse(obj.Property("rating").Value.ToString());
                     manga.Rating_Votes = int.Parse(obj.Property("rating_votes").Value.ToString());
                     return manga;
@@ -256,6 +261,7 @@ namespace MangaTrackerDesktop
                     case "Rating_Votes":
                         if (toLoad[prop.Name] != null) prop.SetValue(manga, int.Parse(toLoad.Property(prop.Name).Value.ToString()));
                         break;
+                    case "Releases": break;
                     default: prop.SetValue(manga, toLoad.Property(prop.Name).Value.ToString()); break;
                 }
             }

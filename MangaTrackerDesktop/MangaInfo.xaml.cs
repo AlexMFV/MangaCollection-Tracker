@@ -24,6 +24,7 @@ namespace MangaTrackerDesktop
         int id;
         Frame frame;
         Manga manga = new Manga();
+        int listID = -1;
 
         public MangaInfo(object _content, Frame _frame, int _id)
         {
@@ -32,11 +33,10 @@ namespace MangaTrackerDesktop
             this.id = _id;
             this.frame = _frame;
 
-            //Check if a file exists for this title (save the file with the id of the title)
-            //If it has no data
-            //Request from api with ID
-            //Else
-            //Read data from files
+            //Check if manga is added to favourites (change button text)
+            listID = Globals.FAVMANGAS_LIST.GetID(id);
+            if (listID != -1)
+                ChangeFavouriteButton();
 
             //this.manga = Globals.ALL_MANGAS.GetByID(this.id);
             this.manga = Cache.LoadSingleManga(this.id);
@@ -89,6 +89,39 @@ namespace MangaTrackerDesktop
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.frame.Content = this.prevContent;
+        }
+
+        public void ChangeFavouriteButton()
+        {
+            btnFav.Content = "Remove from Favorites";
+            btnFav.Tag = "Rem";
+        }
+
+        private void btnFav_Click(object sender, RoutedEventArgs e)
+        {
+            if ((string)btnFav.Tag == "Add")
+            {
+                Globals.FAVMANGAS_LIST.Add(API.ConvertToFavorite(this.manga));
+                listID = Globals.FAVMANGAS_LIST.Count - 1;
+                //Save
+                ChangeFavouriteButton();
+            }
+            else
+            {
+                if ((string)btnFav.Tag == "Rem")
+                {
+                    MessageBoxResult res = MessageBox.Show("Are you sure you want to remove this manga from your library?", "Confirmation", MessageBoxButton.YesNo);
+                    if (res == MessageBoxResult.Yes)
+                    {
+                        Globals.FAVMANGAS_LIST.RemoveAt(listID);
+                        //Save
+                        listID = -1;
+                        btnFav.Content = "Add to Favorites";
+                        btnFav.Tag = "Add";
+                        return;
+                    }
+                }
+            }
         }
     }
 }

@@ -23,6 +23,9 @@ namespace MangaTrackerDesktop
         public Library(object _object, Frame _frame)
         {
             InitializeComponent();
+
+            if(Globals.FAVMANGAS_LIST.Count > 0)
+                lstLibrary.ItemsSource = Globals.FAVMANGAS_LIST;
         }
 
         public ImageSource GetIMG(string url)

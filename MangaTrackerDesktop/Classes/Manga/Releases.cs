@@ -4,57 +4,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 
 namespace MangaTrackerDesktop
 {
-    public class FavMangas : CollectionBase
+    public class Releases : CollectionBase
     {
-        public void Add(FavManga manga)
+        public void Add(Release manga)
         {
             List.Add(manga);
         }
 
-        public void Remove(FavManga manga)
+        public void Remove(Release manga)
         {
             List.Remove(manga);
         }
 
-        public List<FavManga> ToList()
+        public List<Release> ToList()
         {
-            List<FavManga> clone = new List<FavManga>();
+            List<Release> clone = new List<Release>();
 
             for (int i = 0; i < List.Count; i++)
-                clone.Add(List[i] as FavManga);
+                clone.Add(List[i] as Release);
 
             return clone;
         }
 
-        public int GetID(int id)
+        public Releases ToObject(List<Release> list)
         {
-            for(int i = 0; i < List.Count; i++)
-                if ((List[i] as FavManga).Id == id)
-                    return i;
-            return -1;
-        }
-
-        public FavMangas ToObject(List<FavManga> list)
-        {
-            FavMangas mangas = new FavMangas();
+            Releases mangas = new Releases();
             for (int i = 0; i < list.Count; i++)
             {
-                FavManga manga = (FavManga)list[i];
+                Release manga = (Release)list[i];
                 mangas.Add(manga);
             }
             return mangas;
         }
 
-        public List<FavMangas> Partition(int number)
+        public Release GetByID(int _id)
         {
-            List<FavMangas> toReturn = new List<FavMangas>();
+            return ((Releases)List).ToList().First(x => x.Id == _id);
+        }
+
+        public List<Releases> Partition(int number)
+        {
+            List<Releases> toReturn = new List<Releases>();
             for (int i = 0; i < this.Count; i += number)
             {
-                FavMangas manga = new FavMangas();
+                Releases manga = new Releases();
                 for (int j = 0; j < number; j++)
                 {
                     if (i + j >= this.Count)
@@ -67,9 +63,9 @@ namespace MangaTrackerDesktop
             return toReturn;
         }
 
-        public FavManga this[int index]
+        public Release this[int index]
         {
-            get { return (FavManga)List[index]; }
+            get { return (Release)List[index]; }
             set { List[index] = value; }
         }
     }

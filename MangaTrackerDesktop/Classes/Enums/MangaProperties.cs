@@ -28,6 +28,7 @@ namespace MangaTrackerDesktop
         ALT_TITLE,
         GENRES,
         PLOTSUMMARY,
+        RELEASE,
         //AUTHOR_ID, //Or Person_id
         NONE
     }
