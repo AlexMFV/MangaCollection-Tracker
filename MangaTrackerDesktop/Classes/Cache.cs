@@ -113,6 +113,42 @@ namespace MangaTrackerDesktop
             return null;
         }
 
+        public static FavMangas LoadFavMangaList()
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "favDB");
+
+            FavMangas collection = new FavMangas();
+
+            if (Directory.Exists(cacheDir))
+            {
+                if (Directory.GetFiles(cacheDir).Length > 0)
+                {
+                    //Get all the files inside the directory
+                    foreach (string file in Directory.GetFiles(cacheDir, "fav*"))
+                    {
+                        string content = File.ReadAllText(file);
+                        if (content != "")
+                        {
+                            JObject obj = JObject.Parse(content);
+                            FavManga manga = new FavManga();
+                            manga.Id = int.Parse(obj.Property("id").Value.ToString());
+                            manga.Title = obj.Property("title").Value.ToString();
+                            manga.TitleTrimmed = obj.Property("titleTrimmed").Value.ToString();
+                            manga.Volumes = int.Parse(obj.Property("volumes").Value.ToString());
+                            manga.Volumes_owned = int.Parse(obj.Property("volumesOwned").Value.ToString());
+                            manga.Volume_stat = obj.Property("volumeStat").Value.ToString();
+                            manga.Image = obj.Property("imgUrl").Value.ToString();
+                            collection.Add(manga);
+                        }
+                    }
+
+                    return collection;
+                }
+            }
+
+            return new FavMangas();
+        }
+
         public static void SaveSingleManga(Manga manga)
         {
             string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "titlesDB");
@@ -138,6 +174,29 @@ namespace MangaTrackerDesktop
                 obj.Add("releases", JsonConvert.SerializeObject(manga.Releases));
                 obj.Add("rating", manga.Rating);
                 obj.Add("rating_votes", manga.Rating_Votes);
+                obj.WriteTo(writer);
+            }
+        }
+
+        public static void SaveFavManga(FavManga manga)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "favDB");
+
+            if (!Directory.Exists(cacheDir))
+                Directory.CreateDirectory(cacheDir);
+
+            using (StreamWriter file = File.CreateText(cacheDir + "\\" + $"fav_{manga.Id}.json"))
+            using (JsonTextWriter writer = new JsonTextWriter(file))
+            {
+                JObject obj = new JObject();
+                obj.Add("id", manga.Id);
+                obj.Add("title", manga.Title);
+                obj.Add("titleTrimmed", manga.TitleTrimmed);
+                obj.Add("volumes", manga.Volumes);
+                obj.Add("volumesOwned", manga.Volumes_owned);
+                obj.Add("volumeStat", manga.Volume_stat);
+                obj.Add("mainVolumes", manga.Main_volumes);
+                obj.Add("imgUrl", manga.Image); //Change this to image later (for offline use)
                 obj.WriteTo(writer);
             }
         }
@@ -169,7 +228,21 @@ namespace MangaTrackerDesktop
                     manga.PlotSummary = obj.Property("plot").Value.ToString();
                     manga.JpSite = obj.Property("jpsite").Value.ToString();
                     manga.EnSite = obj.Property("ensite").Value.ToString();
-                    manga.Releases = JsonConvert.DeserializeObject<Releases>(obj.Property("releases").Value.ToString());
+
+                    JArray arr = JsonConvert.DeserializeObject<JArray>(obj.Property("releases").Value.ToString());
+                    Releases rels = new Releases();
+                    foreach(JObject obj2 in arr)
+                    {
+                        Release rel = new Release();
+                        rel.Id = int.Parse(obj2.Property("Id").Value.ToString());
+                        rel.Title = obj2.Property("Title").Value.ToString();
+                        rel.Release_date = DateTime.Parse(obj2.Property("Release_date").Value.ToString());
+                        rel.IsGN = bool.Parse(obj2.Property("IsGN").Value.ToString());
+                        rels.Add(rel);
+                    }
+
+                    manga.Releases = rels;
+
                     manga.Rating = double.Parse(obj.Property("rating").Value.ToString());
                     manga.Rating_Votes = int.Parse(obj.Property("rating_votes").Value.ToString());
                     return manga;
@@ -179,10 +252,51 @@ namespace MangaTrackerDesktop
             return null;
         }
 
+        public static FavManga LoadFavManga(int _id)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "favDB");
+
+            if (!Directory.Exists(cacheDir))
+                Directory.CreateDirectory(cacheDir);
+
+            string file = cacheDir + $"\\fav_{_id}.json";
+            FavManga manga = new FavManga();
+
+            if (File.Exists(file))
+            {
+                string content = File.ReadAllText(file);
+                if (content != "")
+                {
+                    JObject obj = JObject.Parse(content);
+                    manga.Id = int.Parse(obj.Property("id").Value.ToString());
+                    manga.Title = obj.Property("title").Value.ToString();
+                    manga.TitleTrimmed = obj.Property("titleTrimmed").Value.ToString();
+                    manga.Volumes = int.Parse(obj.Property("volumes").Value.ToString());
+                    manga.Volumes_owned = int.Parse(obj.Property("volumesOwned").Value.ToString());
+                    manga.Main_volumes = int.Parse(obj.Property("mainVolumes").Value.ToString());
+                    manga.Volume_stat = obj.Property("volumeStat").Value.ToString();
+                    manga.Image = obj.Property("imgUrl").Value.ToString();
+                    return manga;
+                }
+            }
+
+            return null;
+        }
+
+        public static void RemoveFavManga(int id)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "favDB");
+            string filepath = Path.Combine(cacheDir, $"fav_{id}.json");
+
+            if (File.Exists(filepath))
+                File.Delete(filepath);
+        }
+
 
         public static bool isDBCorrupted()
         {
             LoadOrderedDB();
+            LoadOrderedFavManga();
             int count = LoadChecksum();
 
             if (Globals.ALL_MANGAS == null || Globals.ALL_MANGAS.Count != count)
@@ -196,6 +310,13 @@ namespace MangaTrackerDesktop
         {
             if (mangas != null)
                 return mangas.ToObject(mangas.ToList().OrderBy(item => item.Name).ToList());
+            return null;
+        }
+
+        public static FavMangas OrderMangasByName(FavMangas mangas)
+        {
+            if (mangas != null)
+                return mangas.ToObject(mangas.ToList().OrderBy(item => item.Title).ToList());
             return null;
         }
 
@@ -226,6 +347,11 @@ namespace MangaTrackerDesktop
         {
             Globals.ALL_MANGAS = OrderMangasByName(LoadMangaList());
             Globals.MANGA_LIST = Globals.ALL_MANGAS;
+        }
+
+        public static void LoadOrderedFavManga()
+        {
+            Globals.FAVMANGAS_LIST = OrderMangasByName(LoadFavMangaList());
         }
 
         private static void SaveChecksum(int _num)

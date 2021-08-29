@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,13 @@ namespace MangaTrackerDesktop
         private DateTime release_date;
         private bool isGN;
 
+        [JsonProperty("Id")]
         public int Id { get => id; set => id = value; }
+        [JsonProperty("Title")]
         public string Title { get => title; set => title = value; }
+        [JsonProperty("Release_date")]
         public DateTime Release_date { get => release_date; set => release_date = value; }
+        [JsonProperty("IsGN")]
         public bool IsGN { get => isGN; set => isGN = value; }
 
         public Release() { }

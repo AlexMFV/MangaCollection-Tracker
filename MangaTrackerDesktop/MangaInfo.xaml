@@ -19,7 +19,7 @@
         <Label x:Name="lblRatingVotes" Content="xxxxxxx users" FontSize="10" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Foreground="White" Margin="0,117,101,0" HorizontalAlignment="Right" Width="107" Height="35" VerticalAlignment="Top"/>
         <Label x:Name="lblRatingScore" Content="x.xx/10" BorderBrush="AliceBlue" BorderThickness="2" FontSize="32" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Margin="0,52,98,0" HorizontalAlignment="Right" Width="183" Height="97" VerticalAlignment="Top"/>
         <TextBlock x:Name="txtPlotSum" TextWrapping="Wrap" Foreground="White" FontSize="14" Margin="20,168,20,0" Height="133" VerticalAlignment="Top"/>
-        <Button x:Name="btnFav" Click="btnFav_Click" Content="Add to Favorites" Tag="Add" Margin="0,0,101,10" HorizontalAlignment="Right" Width="150" Height="30" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnFav" Click="btnFav_Click" Content="Add to Library" Tag="Add" Margin="0,0,101,10" HorizontalAlignment="Right" Width="150" Height="30" VerticalAlignment="Bottom"/>
         <Button Click="Button_Click" Content="Go Back" Margin="0,0,10,10" HorizontalAlignment="Right" Width="80" Height="30" VerticalAlignment="Bottom"/>
     </Grid>
 </Page>

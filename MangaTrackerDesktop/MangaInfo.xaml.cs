@@ -93,7 +93,7 @@ namespace MangaTrackerDesktop
 
         public void ChangeFavouriteButton()
         {
-            btnFav.Content = "Remove from Favorites";
+            btnFav.Content = "Remove from Library";
             btnFav.Tag = "Rem";
         }
 
@@ -103,7 +103,7 @@ namespace MangaTrackerDesktop
             {
                 Globals.FAVMANGAS_LIST.Add(API.ConvertToFavorite(this.manga));
                 listID = Globals.FAVMANGAS_LIST.Count - 1;
-                //Save
+                Cache.SaveFavManga(Globals.FAVMANGAS_LIST[Globals.FAVMANGAS_LIST.Count - 1]);
                 ChangeFavouriteButton();
             }
             else
@@ -114,9 +114,9 @@ namespace MangaTrackerDesktop
                     if (res == MessageBoxResult.Yes)
                     {
                         Globals.FAVMANGAS_LIST.RemoveAt(listID);
-                        //Save
+                        Cache.RemoveFavManga(this.id);
                         listID = -1;
-                        btnFav.Content = "Add to Favorites";
+                        btnFav.Content = "Add to Library";
                         btnFav.Tag = "Add";
                         return;
                     }

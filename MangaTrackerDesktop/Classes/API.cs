@@ -183,8 +183,16 @@ namespace MangaTrackerDesktop
 
         public static FavManga ConvertToFavorite(Manga manga)
         {
+            int gnVolumes = 0;
+
+            for (int i = 0; i < manga.Releases.Count; i++)
+            {
+                if(manga.Releases[i].IsGN)
+                    gnVolumes++;
+            }
+
             if(manga is not null)
-                return new FavManga(manga.Id, manga.Name, manga.Releases.Count, 0, manga.ImgURL);
+                return new FavManga(manga.Id, manga.Name, manga.Releases.Count, 0, gnVolumes, manga.ImgURL);
             return new FavManga();
         }
     }

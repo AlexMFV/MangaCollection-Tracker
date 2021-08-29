@@ -20,7 +20,7 @@
                     <StackPanel HorizontalAlignment="Center" MaxWidth="300">
                         <Image Source="{Binding Image}" HorizontalAlignment="Center" Height="230" Width="200" Stretch="Fill" Margin="10,10,10,10"/>
                         <TextBlock FontWeight="Bold" HorizontalAlignment="Center" Text="{Binding TitleTrimmed}"/>
-                        <TextBlock Text="{Binding Volume_stat}"/>
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Volume_stat}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
