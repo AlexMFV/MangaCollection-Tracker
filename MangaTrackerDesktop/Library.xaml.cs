@@ -20,9 +20,14 @@ namespace MangaTrackerDesktop
     /// </summary>
     public partial class Library : Page
     {
+        Frame frame;
+        object prevContent;
+
         public Library(object _object, Frame _frame)
         {
             InitializeComponent();
+            this.frame = _frame;
+            this.prevContent = _object;
 
             if(Globals.FAVMANGAS_LIST.Count > 0)
                 lstLibrary.ItemsSource = Globals.FAVMANGAS_LIST;
@@ -39,6 +44,28 @@ namespace MangaTrackerDesktop
 
             image.Source = bitmap;
             return image.Source;
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
+            this.frame.Content = this.prevContent;
+        }
+
+        private void txtSearchLib_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (txtSearchLib.Text == "")
+                {
+                    Globals.FAVMANGAS_LIST = Globals.ALL_FAVMANGAS;
+                    lstLibrary.ItemsSource = Globals.FAVMANGAS_LIST;
+                }
+                else
+                {
+                    Globals.FAVMANGAS_LIST = Globals.ALL_FAVMANGAS.ToObject(Globals.ALL_FAVMANGAS.ToList().Where(x => x.Title.ToLower().Contains(txtSearchLib.Text.ToLower())).ToList());
+                    lstLibrary.ItemsSource = Globals.FAVMANGAS_LIST;
+                }
+            }
         }
     }
 }

@@ -351,7 +351,8 @@ namespace MangaTrackerDesktop
 
         public static void LoadOrderedFavManga()
         {
-            Globals.FAVMANGAS_LIST = OrderMangasByName(LoadFavMangaList());
+            Globals.ALL_FAVMANGAS = OrderMangasByName(LoadFavMangaList());
+            Globals.FAVMANGAS_LIST = Globals.ALL_FAVMANGAS;
         }
 
         private static void SaveChecksum(int _num)

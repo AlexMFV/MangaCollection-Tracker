@@ -10,6 +10,7 @@ namespace MangaTrackerDesktop
     {
         public static Mangas ALL_MANGAS = new Mangas();
         public static Mangas MANGA_LIST = new Mangas();
+        public static FavMangas ALL_FAVMANGAS = new FavMangas();
         public static FavMangas FAVMANGAS_LIST = new FavMangas();
         public static string APPDATA_DIR = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         public static int NUM_PARTITION = 1000;
