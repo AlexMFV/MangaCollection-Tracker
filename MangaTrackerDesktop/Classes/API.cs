@@ -173,11 +173,31 @@ namespace MangaTrackerDesktop
         {
             release.Title = value;
 
-            if (value.Contains("(GN "))
-                release.IsGN = true;
-            else
-                release.IsGN = false;
+            if (value.Contains("[Omnibus]"))
+            {
+                release.SetReleaseType(isob: true);
+                releases.Add(release); return;
+            }
 
+            if (value.Contains("[Hardcover]"))
+            {
+                release.SetReleaseType(ishc: true);
+                releases.Add(release); return;
+            }
+
+            if (value.Contains("Box Set"))
+            {
+                release.SetReleaseType(isbs: true);
+                releases.Add(release); return;
+            }
+
+            if (value.Contains("(GN ") && !value.Contains("[") && !value.Contains("]") && !value.Substring(value.IndexOf("(GN")).Contains("-"))
+            {
+                release.SetReleaseType(isgn: true);
+                releases.Add(release); return;
+            }
+
+            release.SetReleaseType(isother: true);
             releases.Add(release);
         }
 

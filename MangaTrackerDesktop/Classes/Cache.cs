@@ -238,6 +238,10 @@ namespace MangaTrackerDesktop
                         rel.Title = obj2.Property("Title").Value.ToString();
                         rel.Release_date = DateTime.Parse(obj2.Property("Release_date").Value.ToString());
                         rel.IsGN = bool.Parse(obj2.Property("IsGN").Value.ToString());
+                        rel.IsOB = bool.Parse(obj2.Property("IsOB").Value.ToString());
+                        rel.IsHC = bool.Parse(obj2.Property("IsHC").Value.ToString());
+                        rel.IsBS = bool.Parse(obj2.Property("IsBS").Value.ToString());
+                        rel.IsOther = bool.Parse(obj2.Property("IsOther").Value.ToString());
                         rels.Add(rel);
                     }
 

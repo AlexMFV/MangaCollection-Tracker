@@ -12,7 +12,11 @@ namespace MangaTrackerDesktop
         private int id;
         private string title;
         private DateTime release_date;
-        private bool isGN;
+        private bool isGN; //Graphic Novel
+        private bool isOB; //Omnibus
+        private bool isHC; //Hardcover
+        private bool isBS; //Box Set
+        private bool isOther; //Other releases
 
         [JsonProperty("Id")]
         public int Id { get => id; set => id = value; }
@@ -22,15 +26,36 @@ namespace MangaTrackerDesktop
         public DateTime Release_date { get => release_date; set => release_date = value; }
         [JsonProperty("IsGN")]
         public bool IsGN { get => isGN; set => isGN = value; }
+        [JsonProperty("IsOB")]
+        public bool IsOB { get => isOB; set => isOB = value; }
+        [JsonProperty("IsHC")]
+        public bool IsHC { get => isHC; set => isHC = value; }
+        [JsonProperty("IsBS")]
+        public bool IsBS { get => isBS; set => isBS = value; }
+        [JsonProperty("IsOther")]
+        public bool IsOther { get => isOther; set => isOther = value; }
 
         public Release() { }
 
-        public Release(int id, string title, DateTime release_date, int urlId, bool isgn)
+        public Release(int id, string title, DateTime release_date, int urlId, bool isgn = false, bool isob = false, bool ishc = false, bool isbs = false, bool isother = false)
         {
             this.Id = id;
             this.Title = title;
             this.Release_date = release_date;
-            this.IsGN = isGN;
+            this.IsGN = isgn;
+            this.IsOB = isob;
+            this.IsHC = ishc;
+            this.IsBS = isbs;
+            this.IsOther = isother;
+        }
+
+        public void SetReleaseType(bool isgn = false, bool isob = false, bool ishc = false, bool isbs = false, bool isother = false)
+        {
+            this.IsGN = isgn;
+            this.IsOB = isob;
+            this.IsHC = ishc;
+            this.IsBS = isbs;
+            this.IsOther = isother;
         }
     }
 }
