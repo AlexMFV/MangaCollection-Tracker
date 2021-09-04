@@ -9,23 +9,31 @@
       Title="LibManga">
 
     <Grid>
-        <Button x:Name="btnBack" Click="btnBack_Click" Width="80" Height="30" Margin="10,10,0,0" Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button x:Name="btnBack" Click="btnBack_Click" Margin="0,0,10,10" Content="Back" HorizontalAlignment="Right" Width="80" Height="30" VerticalAlignment="Bottom"/>
         <Image HorizontalAlignment="Left" Width="96" Stretch="Fill" Margin="10,294,0,0" Height="103" VerticalAlignment="Top"/>
         <TextBlock Text="Manga Name" Height="32" Margin="117,294,10,0" VerticalAlignment="Top"/>
-        <TabControl Margin="10,45,10,10">
-            <TabItem>
+        <TabControl Margin="10,10,10,45">
+            <TabItem x:Name="tabStats"  BorderBrush="AntiqueWhite" IsSelected="True">
                 <TabItem.Header>
-                    <TextBlock Text="Stats" FontSize="20" />
+                    <TextBlock Text="Stats" FontWeight="Bold" FontSize="20" MouseEnter="TabItem_MouseEnter" MouseLeave="TabItem_MouseLeave"/>
                 </TabItem.Header>
             </TabItem>
-            <TabItem>
+            <TabItem x:Name="tabVolumes" BorderBrush="AntiqueWhite">
                 <TabItem.Header>
-                    <TextBlock Text="Volumes" FontSize="20" />
+                    <TextBlock Text="Volumes" FontWeight="Bold" FontSize="20" MouseEnter="TabItem_MouseEnter" MouseLeave="TabItem_MouseLeave"/>
                 </TabItem.Header>
+                <Grid>
+                    <CheckBox x:Name="chkGN" Width="100" Checked="chk_Checked" Unchecked="chk_Checked" IsChecked="True" Height="32" Content="Softcovers" Margin="0,10,141,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkHC" Width="100" Checked="chk_Checked" Unchecked="chk_Checked" Height="32" Content="Hardcovers" Margin="0,42,141,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkOB" Width="100" Checked="chk_Checked" Unchecked="chk_Checked" Height="32" Content="Omnibuses" Margin="0,10,36,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="chkBS" Width="100" Checked="chk_Checked" Unchecked="chk_Checked" Height="32" Content="Box Sets" Margin="0,42,36,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                    <CheckBox x:Name="chkOther" Width="100" Checked="chk_Checked" Unchecked="chk_Checked" Height="32" Content="Other" Margin="0,74,141,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <ListView x:Name="lstVolReleases" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,10,296,0"/>
+                </Grid>
             </TabItem>
-            <TabItem>
+            <TabItem x:Name="tabPrices" BorderBrush="AntiqueWhite">
                 <TabItem.Header>
-                    <TextBlock Text="Prices" FontSize="20" />
+                    <TextBlock Text="Prices" FontSize="20" FontWeight="Bold" MouseEnter="TabItem_MouseEnter" MouseLeave="TabItem_MouseLeave"/>
                 </TabItem.Header>
             </TabItem>
         </TabControl>
