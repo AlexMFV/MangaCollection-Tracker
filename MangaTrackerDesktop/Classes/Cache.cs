@@ -178,6 +178,80 @@ namespace MangaTrackerDesktop
             }
         }
 
+        public static void SaveVolumeInfos(Volumes vols, int seriesID)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "volumesDB");
+            string filepath = Path.Combine(cacheDir, $"vols_{seriesID}.json");
+
+            if (!Directory.Exists(cacheDir))
+                Directory.CreateDirectory(cacheDir);
+
+            Directory.CreateDirectory(cacheDir);
+
+            using (StreamWriter file = File.CreateText(filepath))
+            using (JsonTextWriter writer = new JsonTextWriter(file))
+            {
+                JArray arr = new JArray();
+
+                foreach (Volume vol in vols)
+                {
+                    JObject obj = new JObject();
+
+                    obj.Add("id", vol.Id);
+                    obj.Add("price", vol.VolPrice);
+                    obj.Add("shipping", vol.ShipPrice);
+                    obj.Add("costs", vol.AddCosts);
+                    obj.Add("buy", vol.BuyDate);
+                    obj.Add("arrival", vol.ArrivalDate);
+                    obj.Add("status", vol.Status);
+
+                    arr.Add(obj);
+                }
+
+                arr.WriteTo(writer);
+            }
+        }
+
+        public static Volumes LoadVolumeInfos(int seriesID)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "volumesDB");
+            Volumes collection = new Volumes();
+
+            if (Directory.Exists(cacheDir))
+            {
+                if (Directory.GetFiles(cacheDir).Length > 0)
+                {
+                    //Get all the files inside the directory
+                    string[] files = Directory.GetFiles(cacheDir, $"vols_{seriesID}.json");
+
+                    if (files.Length > 0)
+                    {
+                        string content = File.ReadAllText(files[0]);
+                        if (content != "")
+                        {
+                            JArray arr = JArray.Parse(content);
+
+                            foreach (JObject obj in arr)
+                            {
+                                Volume vol = new Volume();
+                                vol.Id = int.Parse(obj.Property("id").Value.ToString());
+                                vol.VolPrice = double.Parse(obj.Property("price").Value.ToString());
+                                vol.ShipPrice = double.Parse(obj.Property("shipping").Value.ToString());
+                                vol.AddCosts = double.Parse(obj.Property("costs").Value.ToString());
+                                vol.BuyDate = DateTime.Parse(obj.Property("buy").Value.ToString());
+                                vol.ArrivalDate = DateTime.Parse(obj.Property("arrival").Value.ToString());
+                                vol.Status = obj.Property("status").Value.ToString();
+                                collection.Add(vol);
+                            }
+                        }
+                    }
+                }
+                return collection;
+            }
+
+            return new Volumes();
+        }
+
         public static void SaveFavManga(FavManga manga)
         {
             string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "favDB");
@@ -295,7 +369,6 @@ namespace MangaTrackerDesktop
             if (File.Exists(filepath))
                 File.Delete(filepath);
         }
-
 
         public static bool isDBCorrupted()
         {
