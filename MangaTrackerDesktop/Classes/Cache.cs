@@ -137,6 +137,7 @@ namespace MangaTrackerDesktop
                             manga.Volumes = int.Parse(obj.Property("volumes").Value.ToString());
                             manga.Volumes_owned = int.Parse(obj.Property("volumesOwned").Value.ToString());
                             manga.Volume_stat = obj.Property("volumeStat").Value.ToString();
+                            manga.Rating = double.Parse(obj.Property("rating").Value.ToString());
                             manga.Image = obj.Property("imgUrl").Value.ToString();
                             collection.Add(manga);
                         }
@@ -270,6 +271,7 @@ namespace MangaTrackerDesktop
                 obj.Add("volumesOwned", manga.Volumes_owned);
                 obj.Add("volumeStat", manga.Volume_stat);
                 obj.Add("mainVolumes", manga.Main_volumes);
+                obj.Add("rating", manga.Rating);
                 obj.Add("imgUrl", manga.Image); //Change this to image later (for offline use)
                 obj.WriteTo(writer);
             }
@@ -352,6 +354,7 @@ namespace MangaTrackerDesktop
                     manga.Volumes = int.Parse(obj.Property("volumes").Value.ToString());
                     manga.Volumes_owned = int.Parse(obj.Property("volumesOwned").Value.ToString());
                     manga.Main_volumes = int.Parse(obj.Property("mainVolumes").Value.ToString());
+                    manga.Rating = double.Parse(obj.Property("rating").Value.ToString());
                     manga.Volume_stat = obj.Property("volumeStat").Value.ToString();
                     manga.Image = obj.Property("imgUrl").Value.ToString();
                     return manga;
