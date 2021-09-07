@@ -212,7 +212,7 @@ namespace MangaTrackerDesktop
             }
 
             if(manga is not null)
-                return new FavManga(manga.Id, manga.Name, manga.Releases.Count, 0, gnVolumes, manga.ImgURL);
+                return new FavManga(manga.Id, manga.Name, manga.Releases.Count, 0, gnVolumes, Math.Round(manga.Rating, 2), manga.ImgURL);
             return new FavManga();
         }
     }

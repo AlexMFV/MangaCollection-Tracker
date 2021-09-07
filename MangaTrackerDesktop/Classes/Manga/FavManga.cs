@@ -15,12 +15,13 @@ namespace MangaTrackerDesktop
         private int volumes;
         private int main_volumes;
         private int volumes_owned;
+        private double rating;
         private string volume_stat;
         private string image;
 
         public FavManga() { }
 
-        public FavManga(int id, string title, int volumes, int volumes_owned, int mainVolumes, string image)
+        public FavManga(int id, string title, int volumes, int volumes_owned, int mainVolumes, double rating, string image)
         {
             this.id = id;
             this.title = title;
@@ -33,6 +34,7 @@ namespace MangaTrackerDesktop
             this.volumes = volumes;
             this.volumes_owned = volumes_owned;
             this.main_volumes = mainVolumes;
+            this.rating = rating;
             //this.Volume_stat = $"{this.volumes_owned} / {this.volumes} volumes";
             this.Volume_stat = $"{this.volumes_owned} / {this.main_volumes} volumes";
             this.image = image;
@@ -46,5 +48,6 @@ namespace MangaTrackerDesktop
         public string Volume_stat { get => volume_stat; set => volume_stat = value; }
         public string TitleTrimmed { get => titleTrimmed; set => titleTrimmed = value; }
         public int Main_volumes { get => main_volumes; set => main_volumes = value; }
+        public double Rating { get => rating; set => rating = value; }
     }
 }

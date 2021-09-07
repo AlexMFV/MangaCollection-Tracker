@@ -147,7 +147,8 @@ namespace MangaTrackerDesktop
 
         private void lstMangas_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            this.frame.Content = new MangaInfo(frame.Content, frame, int.Parse(((ListViewItem)lstMangas.Items[lstMangas.SelectedIndex]).Tag.ToString()));
+            if (lstMangas.SelectedIndex != -1)
+                this.frame.Content = new MangaInfo(frame.Content, frame, int.Parse(((ListViewItem)lstMangas.Items[lstMangas.SelectedIndex]).Tag.ToString()));
         }
 
         private void btnLibrary_Click(object sender, RoutedEventArgs e)

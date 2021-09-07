@@ -70,7 +70,8 @@ namespace MangaTrackerDesktop
 
         private void lstLibrary_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            this.frame.Content = new LibManga(this.frame.Content, this.frame, Globals.FAVMANGAS_LIST[lstLibrary.SelectedIndex]);
+            if (lstLibrary.SelectedIndex != -1)
+                this.frame.Content = new LibManga(this.frame.Content, this.frame, Globals.FAVMANGAS_LIST[lstLibrary.SelectedIndex]);
         }
     }
 }

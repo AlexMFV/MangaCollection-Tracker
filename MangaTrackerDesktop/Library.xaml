@@ -8,10 +8,42 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Library">
-
-    <Grid>
-        <Button x:Name="btnBack" Click="btnBack_Click" Width="80" Height="30" Margin="10,10,0,0" Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <ListBox x:Name="lstLibrary" MouseDoubleClick="lstLibrary_MouseDoubleClick" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" BorderBrush="Aqua" BorderThickness="1" Margin="10,45,10,10" Grid.Column="0">
+    <Page.Resources>
+        <Style x:Key="_aa" TargetType="ListBoxItem">
+            <Setter Property="Height" Value="320"/>
+            <Setter Property="Margin" Value="2,4,2,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border"
+                                SnapsToDevicePixels="true"
+                                CornerRadius="5"
+                                Background="#3f3c42">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="_Border" Property="Background" Value="Transparent"/>
+                                <Setter TargetName="_Border" Property="BorderBrush" Value="Transparent" />
+                                <Setter TargetName="_Border" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="#58545c"/>
+                                <Setter TargetName="_Border" Property="BorderBrush" Value="#79777a" />
+                                <Setter TargetName="_Border" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="_Border" Property="Background" Value="#58545c"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>        
+        <Button x:Name="btnBack" Click="btnBack_Click" Width="80" Height="30" Margin="8,8,0,0" Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <ListBox ItemContainerStyle="{DynamicResource _aa}" x:Name="lstLibrary" MouseDoubleClick="lstLibrary_MouseDoubleClick" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" BorderBrush="White" BorderThickness="1" Margin="10,50,10,8" Grid.Column="0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="4" HorizontalAlignment="Center"/>
@@ -23,15 +55,11 @@
                         <Image Source="{Binding Image}" HorizontalAlignment="Center" Height="230" Width="200" Stretch="Fill" Margin="10,10,10,10"/>
                         <TextBlock FontWeight="Bold" HorizontalAlignment="Center" Text="{Binding TitleTrimmed}"/>
                         <TextBlock HorizontalAlignment="Center" Text="{Binding Volume_stat}"/>
+                        <TextBlock HorizontalAlignment="Center" Margin="0,3,0,6" Text="{Binding Rating, StringFormat={}{0} / 10 ☆}"/>
+                        <!--<Border BorderBrush="White" BorderThickness="1" Width="80" Padding="0,3,0,3" Margin="0,4,0,6"></Border>-->
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="Height" Value="320"/>
-                    <Setter Property="Margin" Value="2,4,2,0"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
         </ListBox>
         <TextBox x:Name="txtSearchLib" Height="30" Width="200" Margin="0,10,10,0" KeyDown="txtSearchLib_KeyDown" mah:TextBoxHelper.Watermark="Search by title" mah:TextBoxHelper.AutoWatermark="True" mah:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Right" VerticalAlignment="Top"/>
     </Grid>
