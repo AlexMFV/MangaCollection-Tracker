@@ -8,8 +8,8 @@
 
     <LinearGradientBrush x:Key="wizardBarBrush" StartPoint="0.5,0.0" EndPoint="0.5,1.0">
         <GradientStop Color="#FFE4E4E4" Offset="0.25"/>
-        <GradientStop Color="#FFededed" Offset="0.50"/>
-        <GradientStop Color="#FFFCFCFC" Offset="0.75"/>
+        <GradientStop Color="#FFE4E4E4" Offset="0.50"/>
+        <GradientStop Color="#FFE4E4E4" Offset="0.75"/>
     </LinearGradientBrush>
     
     <Style TargetType="{x:Type local:WizardProgressBar}">
@@ -25,7 +25,7 @@
                             <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <UniformGrid Rows="4">
+                                        <UniformGrid Rows="1">
                                             <UniformGrid.Effect>
                                                 <DropShadowEffect Color="Black"
                                                                   BlurRadius="3"
@@ -41,7 +41,7 @@
                                             <Style TargetType="Path" x:Key="outerPath">
                                                 <Setter Property="Data" Value="M0.0,0.0 L0.0,0.33 L1.0,0.33 L1.0,0.66 L0.0,0.66 L0.0,1.0"/>
                                                 <Setter Property="StrokeThickness" Value="0"/>
-                                                <Setter Property="Height" Value="21"/>
+                                                <Setter Property="Height" Value="8"/>
                                                 <Setter Property="Stretch" Value="Fill"/>
                                                 <Setter Property="Fill" Value="{StaticResource wizardBarBrush}"/>
                                                 <Setter Property="StrokeEndLineCap" Value="Square"/>
@@ -50,8 +50,7 @@
                                             </Style>
                                             <Style TargetType="Path" x:Key="innerPath" BasedOn="{StaticResource outerPath}">
                                                 <Setter Property="Data" Value="M0.0,0.0 L0.0,0.45 L1.0,0.45 L1.0,0.55 L0.0,0.55 L0.0,1.0"/>
-                                                <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:WizardProgressBar}},
-                                                                                        Path=Foreground}"/>
+                                                <Setter Property="Fill" Value="{DynamicResource LineColor}"/>
                                             </Style>
                                         </DataTemplate.Resources>
                                         <Grid SnapsToDevicePixels="True">
@@ -59,7 +58,7 @@
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
-                                            <Grid >
+                                            <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition/>
                                                     <ColumnDefinition/>
@@ -72,16 +71,15 @@
                                                 <Ellipse Grid.ColumnSpan="2"
                                                          HorizontalAlignment="Center"
                                                          Stroke="Transparent"
-                                                         Height="20"
-                                                         Width="20"
-                                                         Fill="{StaticResource wizardBarBrush}"/>
+                                                         Height="12"
+                                                         Width="12"
+                                                         Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:WizardProgressBar}},Path=Foreground}"/>
                                                 <Ellipse Grid.ColumnSpan="2"
                                                          HorizontalAlignment="Center"
                                                          Stroke="Transparent"
-                                                         Height="14"
-                                                         Width="14"
-                                                         Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:WizardProgressBar}},
-                                                    Path=Foreground}">
+                                                         Height="10"
+                                                         Width="10"
+                                                         Fill="{DynamicResource BallColor}">
                                                     <Ellipse.Visibility>
                                                         <MultiBinding Converter="{StaticResource IsProgressedConverter}"
                                                                       ConverterParameter="False">
@@ -122,8 +120,7 @@
                                                 <Setter TargetName="leftPath" Property="Visibility" Value="Collapsed"/>
                                                 <Setter TargetName="leftFillPath" Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
-                                            <!--, Converter={StaticResource IsLastItemConverter}-->
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}}"
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource IsLastItemConverter}}"
                                                          Value="True">
                                                 <Setter TargetName="rightPath" Property="Visibility" Value="Collapsed"/>
                                                 <Setter TargetName="rightFillPath" Property="Visibility" Value="Collapsed"/>
@@ -150,5 +147,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 </ResourceDictionary>

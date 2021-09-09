@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace MangaTrackerDesktop
 {
@@ -45,21 +46,15 @@ namespace MangaTrackerDesktop
             LoadMangaInfo();
             LoadReleases();
             LoadVolumes();
-
-            //calBuy.DisplayDate = DateTime.Now;
-            //calBuy.SelectedDate = calBuy.DisplayDate;
-            //calArrive.DisplayDate = DateTime.Parse("24/12/2069");
-            //calArrive.SelectedDate = calArrive.DisplayDate;
+        }        
+       
+        public void LoadMangaInfo()
+        {
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.frame.Content = this.prevContent;
-        }
-
-        public void LoadMangaInfo()
-        {
-
         }
 
         public ObservableCollection<string> Steps
@@ -193,6 +188,33 @@ namespace MangaTrackerDesktop
                         vols.Update(vol);
                     }
                 }
+
+                //ProgressBar
+                switch (cbbStatus.SelectedValue)
+                {
+                    case Status.preorder:
+                        pbStatus.Progress = 20;
+                        this.Resources["LineColor"] = Brushes.DodgerBlue;
+                        this.Resources["BallColor"] = Brushes.DodgerBlue;
+                        break;
+                    case Status.ordered:
+                        pbStatus.Progress = 40;
+                        this.Resources["LineColor"] = Brushes.Tomato;
+                        this.Resources["BallColor"] = Brushes.Tomato;
+                        break;
+                    case Status.otw:
+                        pbStatus.Progress = 60;
+                        this.Resources["LineColor"] = Brushes.Orange;
+                        this.Resources["BallColor"] = Brushes.Orange;
+                        break;
+                    case Status.owned:
+                        pbStatus.Progress = 80;
+                        this.Resources["LineColor"] = Brushes.GreenYellow;
+                        this.Resources["BallColor"] = Brushes.GreenYellow;
+                        break;
+                    default: pbStatus.Progress = 0; break;
+                }
+
                 Cache.SaveVolumeInfos(vols, manga.Id);
                 cbbStatus.SelectedIndex = -1;
                 lstVolReleases.SelectedItems.Clear();
@@ -203,17 +225,17 @@ namespace MangaTrackerDesktop
         {
             switch (cbbStatus.SelectedValue)
             {
-                case Status.owned:
-                    item.Foreground = Brushes.GreenYellow;
-                    break;
-                case Status.otw:
-                    item.Foreground = Brushes.Orange;
-                    break;
                 case Status.preorder:
                     item.Foreground = Brushes.DodgerBlue;
                     break;
                 case Status.ordered:
                     item.Foreground = Brushes.Tomato;
+                    break;
+                case Status.otw:
+                    item.Foreground = Brushes.Orange;
+                    break;
+                case Status.owned:
+                    item.Foreground = Brushes.GreenYellow;
                     break;
                 default: item.Foreground = Brushes.White; break;
             }
