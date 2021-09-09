@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,7 @@ namespace MangaTrackerDesktop
         FavManga manga;
         Manga m;
         Volumes vols = new Volumes();
+        bool listLoading = false;
 
         public LibManga(object _content, Frame _frame, FavManga _manga)
         {
@@ -40,6 +42,12 @@ namespace MangaTrackerDesktop
             LoadComboBox();
             LoadMangaInfo();
             LoadReleases();
+            LoadVolumes();
+
+            //calBuy.DisplayDate = DateTime.Now;
+            //calBuy.SelectedDate = calBuy.DisplayDate;
+            //calArrive.DisplayDate = DateTime.Parse("24/12/2069");
+            //calArrive.SelectedDate = calArrive.DisplayDate;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -92,6 +100,22 @@ namespace MangaTrackerDesktop
             }
         }
 
+        public void LoadVolumes()
+        {
+            if (lstVolPrices is not null)
+            {
+                listLoading = true;
+                lstVolPrices.Items.Clear();
+                foreach (Release rel in m.Releases)
+                {
+                    Volume vol = vols.GetByID(rel.Id);
+                    if (vol is not null && vol.Status != Status.none)
+                        AddVolumeItem(rel, vol);
+                }
+            }
+            listLoading = false;
+        }
+
         public void AddVolumeItem(Release rel)
         {
             ListViewItem item = new ListViewItem();
@@ -101,6 +125,15 @@ namespace MangaTrackerDesktop
             if(newVol is not null)
                 ChangeColor(item, newVol.Status);
             lstVolReleases.Items.Add(item);
+        }
+
+        public void AddVolumeItem(Release rel, Volume newVol)
+        {
+            ListViewItem item = new ListViewItem();
+            item.Content = rel.Title;
+            item.Tag = rel.Id;
+            ChangeColor(item, newVol.Status);
+            lstVolPrices.Items.Add(item);
         }
 
         private void TabItem_MouseEnter(object sender, MouseEventArgs e)
@@ -183,6 +216,62 @@ namespace MangaTrackerDesktop
                     item.Foreground = Brushes.Tomato;
                     break;
                 default: item.Foreground = Brushes.White; break;
+            }
+        }
+
+        public void ChangeColor(Label item, string status)
+        {
+            switch (status)
+            {
+                case Status.owned:
+                    item.Foreground = Brushes.GreenYellow;
+                    break;
+                case Status.otw:
+                    item.Foreground = Brushes.Orange;
+                    break;
+                case Status.preorder:
+                    item.Foreground = Brushes.DodgerBlue;
+                    break;
+                case Status.ordered:
+                    item.Foreground = Brushes.Tomato;
+                    break;
+                default: item.Foreground = Brushes.White; break;
+            }
+        }
+
+        private void txt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                lstVolPrices.Focus();
+                ((MahApps.Metro.Controls.NumericUpDown)sender).Focus();
+            }
+        }
+
+        private void Grid_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if((bool)e.OldValue == false && (bool)e.NewValue == true)
+            {
+                LoadVolumes();
+                if (lstVolPrices.Items.Count > 0)
+                    lstVolPrices.SelectedIndex = 0;
+            }
+        }
+
+        private void lstVolPrices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!listLoading)
+            {
+                Volume vol = vols.GetByID((int)((ListViewItem)lstVolPrices.SelectedItem).Tag);
+                txtPrice.Value = vol.VolPrice;
+                txtShip.Value = vol.ShipPrice;
+                txtCosts.Value = vol.AddCosts;
+                calBuy.DisplayDate = vol.BuyDate == DateTime.MinValue ? DateTime.Now : vol.BuyDate;
+                calBuy.SelectedDate = calBuy.DisplayDate;
+                calArrive.DisplayDate = vol.ArrivalDate == DateTime.MinValue ? DateTime.Now : vol.ArrivalDate;
+                calArrive.SelectedDate = calArrive.DisplayDate;
+                lblVolStatus.Content = vol.Status;
+                ChangeColor((Label)lblVolStatus, vol.Status);
             }
         }
     }
