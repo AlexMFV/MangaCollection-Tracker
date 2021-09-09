@@ -27,6 +27,7 @@ namespace MangaTrackerDesktop
         FavManga manga;
         Manga m;
         Volumes vols = new Volumes();
+        bool listLoading = false;
 
         public LibManga(object _content, Frame _frame, FavManga _manga)
         {
@@ -103,6 +104,7 @@ namespace MangaTrackerDesktop
         {
             if (lstVolPrices is not null)
             {
+                listLoading = true;
                 lstVolPrices.Items.Clear();
                 foreach (Release rel in m.Releases)
                 {
@@ -111,6 +113,7 @@ namespace MangaTrackerDesktop
                         AddVolumeItem(rel, vol);
                 }
             }
+            listLoading = false;
         }
 
         public void AddVolumeItem(Release rel)
@@ -257,16 +260,19 @@ namespace MangaTrackerDesktop
 
         private void lstVolPrices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Volume vol = vols.GetByID((int)((ListViewItem)lstVolPrices.SelectedItem).Tag);
-            txtPrice.Value = vol.VolPrice;
-            txtShip.Value = vol.ShipPrice;
-            txtCosts.Value = vol.AddCosts;
-            calBuy.DisplayDate = vol.BuyDate == DateTime.MinValue ? DateTime.Now : vol.BuyDate;
-            calBuy.SelectedDate = calBuy.DisplayDate;
-            calArrive.DisplayDate = vol.ArrivalDate == DateTime.MinValue ? DateTime.Now : vol.ArrivalDate;
-            calArrive.SelectedDate = calArrive.DisplayDate;
-            lblVolStatus.Content = vol.Status;
-            ChangeColor((Label)lblVolStatus, vol.Status);
+            if (!listLoading)
+            {
+                Volume vol = vols.GetByID((int)((ListViewItem)lstVolPrices.SelectedItem).Tag);
+                txtPrice.Value = vol.VolPrice;
+                txtShip.Value = vol.ShipPrice;
+                txtCosts.Value = vol.AddCosts;
+                calBuy.DisplayDate = vol.BuyDate == DateTime.MinValue ? DateTime.Now : vol.BuyDate;
+                calBuy.SelectedDate = calBuy.DisplayDate;
+                calArrive.DisplayDate = vol.ArrivalDate == DateTime.MinValue ? DateTime.Now : vol.ArrivalDate;
+                calArrive.SelectedDate = calArrive.DisplayDate;
+                lblVolStatus.Content = vol.Status;
+                ChangeColor((Label)lblVolStatus, vol.Status);
+            }
         }
     }
 }
