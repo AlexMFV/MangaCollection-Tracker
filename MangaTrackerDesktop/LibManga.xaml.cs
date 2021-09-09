@@ -63,11 +63,13 @@ namespace MangaTrackerDesktop
         public void LoadComboBox()
         {
             cbbStatus.Items.Clear();
-            cbbStatus.Items.Add(Status.owned);
+            cbbStatus.Items.Add(Status.none);
+            cbbStatus.Items.Add(Status.preorder);
             cbbStatus.Items.Add(Status.ordered);
             cbbStatus.Items.Add(Status.otw);
-            cbbStatus.Items.Add(Status.preorder);
-            cbbStatus.Items.Add(Status.none);
+            cbbStatus.Items.Add(Status.owned);
+
+            cbbStatus.SelectedIndex = 0;
         }
 
         public void LoadReleases()
@@ -260,7 +262,7 @@ namespace MangaTrackerDesktop
 
         private void lstVolPrices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!listLoading)
+            if (!listLoading && lstVolPrices.SelectedItems.Count == 1)
             {
                 Volume vol = vols.GetByID((int)((ListViewItem)lstVolPrices.SelectedItem).Tag);
                 txtPrice.Value = vol.VolPrice;

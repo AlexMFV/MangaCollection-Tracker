@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Resources\ScrollBar.xaml"/>
                 <ResourceDictionary Source="Resources\Themes.xaml"/>
                 <ResourceDictionary Source="Resources\Global.xaml"/>
+                <ResourceDictionary Source="Resources\ProgressBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
