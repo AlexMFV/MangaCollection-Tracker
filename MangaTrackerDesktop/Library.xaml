@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Library">
     <Page.Resources>
-        <Style x:Key="_aa" TargetType="ListBoxItem">
+        <Style x:Key="_cardListBox" TargetType="ListBoxItem">
             <Setter Property="Height" Value="320"/>
             <Setter Property="Margin" Value="2,4,2,0"/>
             <Setter Property="Template">
@@ -43,7 +43,7 @@
     </Page.Resources>
     <Grid>        
         <Button x:Name="btnBack" Click="btnBack_Click" Width="80" Height="30" Margin="8,8,0,0" Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <ListBox ItemContainerStyle="{DynamicResource _aa}" x:Name="lstLibrary" MouseDoubleClick="lstLibrary_MouseDoubleClick" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" BorderBrush="White" BorderThickness="1" Margin="10,50,10,8" Grid.Column="0">
+        <ListBox ItemContainerStyle="{DynamicResource _cardListBox}" x:Name="lstLibrary" MouseDoubleClick="lstLibrary_MouseDoubleClick" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" BorderBrush="White" BorderThickness="1" Margin="10,50,10,8" Grid.Column="0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="4" HorizontalAlignment="Center"/>

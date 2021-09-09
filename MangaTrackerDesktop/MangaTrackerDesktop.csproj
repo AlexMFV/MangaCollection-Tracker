@@ -14,4 +14,9 @@
     <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46367.54" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+    <Folder Include="Resources\Icons\" />
+  </ItemGroup>
+
 </Project>
