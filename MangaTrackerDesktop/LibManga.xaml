@@ -32,7 +32,7 @@
                     <Label Content="Volume Status" FontSize="15" FontWeight="Bold" Height="32" Margin="0,120,147,0" HorizontalAlignment="Right" Width="115" VerticalAlignment="Top"/>
                     <ComboBox x:Name="cbbStatus" SelectionChanged="cbbStatus_SelectionChanged" Height="32" Margin="0,152,36,0" HorizontalAlignment="Right" Width="221" VerticalAlignment="Top"/>
 
-                    <local:WizardProgressBar ItemsSource="{Binding Steps}"
+                    <local:WizardProgressBar x:Name="pbStatus" ItemsSource="{Binding Steps}"
                                     Foreground="#FF086398"
                                     Progress="{Binding Progress}"
                                     SnapsToDevicePixels="True"

@@ -12,7 +12,7 @@
     <Grid>
         <ListView x:Name="lstMangas" Margin="10,50,10,40" BorderBrush="White" MouseDoubleClick="lstMangas_MouseDoubleClick" BorderThickness="1"></ListView>
         <Label x:Name="lblPages" Height="30" Width="150" Margin="10,0,0,5" Content="Page x/x" HorizontalAlignment="Left" VerticalAlignment="Bottom"></Label>
-        <Button x:Name="btnLibrary" Height="30" Width="85" Content="My Library" Margin="45,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnLibrary_Click"/>
+        <Button x:Name="btnLibrary" Height="30" Width="85" Content="My Library" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnLibrary_Click"/>
         <!--<Button x:Name="btnView" Height="30" Width="85" ToolTip="View Mode" Content="f58d" Margin="150,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnView_Click"/>-->
         <Button x:Name="btnPrev" Click="btnPrev_Click" Height="30" Width="50" Content="Prev" Margin="0,0,65,5" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Button>
         <Button x:Name="btnNext" Click="btnNext_Click" Height="30" Width="50" Content="Next" Margin="0,0,10,5" HorizontalAlignment="Right" VerticalAlignment="Bottom"></Button>

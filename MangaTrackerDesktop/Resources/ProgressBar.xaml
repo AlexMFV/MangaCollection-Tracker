@@ -3,6 +3,15 @@
                     xmlns:local="clr-namespace:MangaTrackerDesktop"
                     xmlns:converters="clr-namespace:MangaTrackerDesktop">
 
+    <converters:IsLastItemConverter x:Key="IsLastItemConverter"/>
+    <converters:IsProgressedConverter x:Key="IsProgressedConverter"/>
+
+    <LinearGradientBrush x:Key="wizardBarBrush" StartPoint="0.5,0.0" EndPoint="0.5,1.0">
+        <GradientStop Color="#FFE4E4E4" Offset="0.25"/>
+        <GradientStop Color="#FFededed" Offset="0.50"/>
+        <GradientStop Color="#FFFCFCFC" Offset="0.75"/>
+    </LinearGradientBrush>
+    
     <Style TargetType="{x:Type local:WizardProgressBar}">
         <Setter Property="Template">
             <Setter.Value>
@@ -16,7 +25,7 @@
                             <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <UniformGrid Rows="1">
+                                        <UniformGrid Rows="4">
                                             <UniformGrid.Effect>
                                                 <DropShadowEffect Color="Black"
                                                                   BlurRadius="3"

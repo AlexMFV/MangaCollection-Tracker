@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -39,6 +40,7 @@ namespace MangaTrackerDesktop
 
             vols = Cache.LoadVolumeInfos(this.manga.Id);
 
+            LoadStatus();
             LoadComboBox();
             LoadMangaInfo();
             LoadReleases();
@@ -58,6 +60,22 @@ namespace MangaTrackerDesktop
         public void LoadMangaInfo()
         {
 
+        }
+
+        public ObservableCollection<string> Steps
+        {
+            get;
+            set;
+        }
+
+        public void LoadStatus()
+        {
+            Steps = new ObservableCollection<string>();
+            Steps.Add(Status.preorder);
+            Steps.Add(Status.ordered);
+            Steps.Add(Status.otw);
+            Steps.Add(Status.owned);
+            this.DataContext = this;
         }
 
         public void LoadComboBox()
