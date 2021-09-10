@@ -337,8 +337,11 @@ namespace MangaTrackerDesktop
             {
                 if (lstVolReleases.SelectedItems.Count > 1)
                 {
-                    cbbStatus.SelectedIndex = 0;
-                    noise = true;
+                    if (cbbStatus.SelectedIndex != 0)
+                    {
+                        noise = true;
+                        cbbStatus.SelectedIndex = 0;
+                    }
                 }
                 else
                 {
@@ -346,14 +349,20 @@ namespace MangaTrackerDesktop
                     if (vol != null)
                     {
                         UpdateProgressBarStatus(vol.Status);
-                        cbbStatus.SelectedItem = vol.Status;
-                        noise = true;
+                        if(cbbStatus.SelectedItem != vol.Status)
+                        {
+                            noise = true;
+                            cbbStatus.SelectedItem = vol.Status;
+                        }
                     }
                     else
                     {
                         UpdateProgressBarStatus(Status.none);
-                        cbbStatus.SelectedIndex = 0;
-                        noise = true;
+                        if(cbbStatus.SelectedIndex != 0)
+                        {
+                            noise = true;
+                            cbbStatus.SelectedIndex = 0;
+                        }
                     }
                 }
             }
