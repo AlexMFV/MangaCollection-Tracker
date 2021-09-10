@@ -30,6 +30,7 @@ namespace MangaTrackerDesktop
         Manga m;
         Volumes vols = new Volumes();
         bool listLoading = false;
+        bool noise = false;
 
         public LibManga(object _content, Frame _frame, FavManga _manga)
         {
@@ -168,56 +169,69 @@ namespace MangaTrackerDesktop
 
         private void cbbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(cbbStatus.SelectedIndex != -1 && lstVolReleases.SelectedItems.Count > 0)
+            if (!noise)
             {
-                foreach(ListViewItem item in lstVolReleases.SelectedItems)
+                if (cbbStatus.SelectedIndex != -1 && lstVolReleases.SelectedItems.Count > 0)
                 {
-                    ChangeColor(item);
-                    if(!vols.Contains((int)item.Tag))
+                    foreach (ListViewItem item in lstVolReleases.SelectedItems)
                     {
-                        Release rel = m.Releases.GetByID((int)item.Tag);
-                        Volume vol = new Volume();
-                        vol.Id = rel.Id;
-                        vol.Status = (string)cbbStatus.SelectedItem;
-                        vols.Add(vol);
+                        ChangeColor(item);
+                        if (!vols.Contains((int)item.Tag))
+                        {
+                            Release rel = m.Releases.GetByID((int)item.Tag);
+                            Volume vol = new Volume();
+                            vol.Id = rel.Id;
+                            vol.Status = (string)cbbStatus.SelectedItem;
+                            vols.Add(vol);
+                        }
+                        else
+                        {
+                            Volume vol = vols.GetByID((int)item.Tag);
+                            vol.Status = (string)cbbStatus.SelectedItem;
+                            vols.Update(vol);
+                        }
                     }
-                    else
-                    {
-                        Volume vol = vols.GetByID((int)item.Tag);
-                        vol.Status = (string)cbbStatus.SelectedItem;
-                        vols.Update(vol);
-                    }
-                }
 
-                //ProgressBar
-                switch (cbbStatus.SelectedValue)
-                {
-                    case Status.preorder:
-                        pbStatus.Progress = 20;
-                        this.Resources["LineColor"] = Brushes.DodgerBlue;
-                        this.Resources["BallColor"] = Brushes.DodgerBlue;
-                        break;
-                    case Status.ordered:
-                        pbStatus.Progress = 40;
-                        this.Resources["LineColor"] = Brushes.Tomato;
-                        this.Resources["BallColor"] = Brushes.Tomato;
-                        break;
-                    case Status.otw:
-                        pbStatus.Progress = 60;
-                        this.Resources["LineColor"] = Brushes.Orange;
-                        this.Resources["BallColor"] = Brushes.Orange;
-                        break;
-                    case Status.owned:
-                        pbStatus.Progress = 80;
-                        this.Resources["LineColor"] = Brushes.GreenYellow;
-                        this.Resources["BallColor"] = Brushes.GreenYellow;
-                        break;
-                    default: pbStatus.Progress = 0; break;
-                }
+                    UpdateProgressBarStatus((string)cbbStatus.SelectedValue);
 
-                Cache.SaveVolumeInfos(vols, manga.Id);
-                cbbStatus.SelectedIndex = -1;
-                lstVolReleases.SelectedItems.Clear();
+                    Cache.SaveVolumeInfos(vols, manga.Id);
+                    //lstVolReleases.SelectedItems.Clear();
+                    //cbbStatus.SelectedIndex = 0;
+                }
+            }
+            
+            noise = false;
+        }
+
+        public void UpdateProgressBarStatus(string status)
+        {
+            //ProgressBar
+            switch (status)
+            {
+                case Status.preorder:
+                    pbStatus.Progress = 20;
+                    this.Resources["LineColor"] = Brushes.RoyalBlue; //DodgerBlue
+                    this.Resources["BallColor"] = Brushes.RoyalBlue; //DodgerBlue
+                    break;
+                case Status.ordered:
+                    pbStatus.Progress = 40;
+                    this.Resources["LineColor"] = Brushes.Firebrick; //Tomato
+                    this.Resources["BallColor"] = Brushes.Firebrick; //Tomato
+                    break;
+                case Status.otw:
+                    pbStatus.Progress = 60;
+                    this.Resources["LineColor"] = Brushes.DarkOrange; //Orange
+                    this.Resources["BallColor"] = Brushes.DarkOrange; //Orange
+                    break;
+                case Status.owned:
+                    pbStatus.Progress = 80;
+                    this.Resources["LineColor"] = Brushes.LimeGreen; //GreenYellow
+                    this.Resources["BallColor"] = Brushes.LimeGreen; //GreenYellow
+                    break;
+                default: pbStatus.Progress = 0;
+                    this.Resources["LineColor"] = (LinearGradientBrush)FindResource("wizardBarBrush"); //Change to resources
+                    this.Resources["BallColor"] = (LinearGradientBrush)FindResource("wizardBarBrush"); //Change to resources
+                    break;
             }
         }
 
@@ -314,6 +328,34 @@ namespace MangaTrackerDesktop
                 calArrive.SelectedDate = calArrive.DisplayDate;
                 lblVolStatus.Content = vol.Status;
                 ChangeColor((Label)lblVolStatus, vol.Status);
+            }
+        }
+
+        private void lstVolReleases_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lstVolReleases.SelectedItems.Count > 0)
+            {
+                if (lstVolReleases.SelectedItems.Count > 1)
+                {
+                    cbbStatus.SelectedIndex = 0;
+                    noise = true;
+                }
+                else
+                {
+                    Volume vol = vols.GetByID((int)((ListViewItem)lstVolReleases.SelectedItem).Tag);
+                    if (vol != null)
+                    {
+                        UpdateProgressBarStatus(vol.Status);
+                        cbbStatus.SelectedItem = vol.Status;
+                        noise = true;
+                    }
+                    else
+                    {
+                        UpdateProgressBarStatus(Status.none);
+                        cbbStatus.SelectedIndex = 0;
+                        noise = true;
+                    }
+                }
             }
         }
     }

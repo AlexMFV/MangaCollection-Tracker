@@ -41,7 +41,7 @@
                                             <Style TargetType="Path" x:Key="outerPath">
                                                 <Setter Property="Data" Value="M0.0,0.0 L0.0,0.33 L1.0,0.33 L1.0,0.66 L0.0,0.66 L0.0,1.0"/>
                                                 <Setter Property="StrokeThickness" Value="0"/>
-                                                <Setter Property="Height" Value="8"/>
+                                                <Setter Property="Height" Value="14"/>
                                                 <Setter Property="Stretch" Value="Fill"/>
                                                 <Setter Property="Fill" Value="{StaticResource wizardBarBrush}"/>
                                                 <Setter Property="StrokeEndLineCap" Value="Square"/>
@@ -71,14 +71,14 @@
                                                 <Ellipse Grid.ColumnSpan="2"
                                                          HorizontalAlignment="Center"
                                                          Stroke="Transparent"
-                                                         Height="12"
-                                                         Width="12"
+                                                         Height="16"
+                                                         Width="16"
                                                          Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:WizardProgressBar}},Path=Foreground}"/>
                                                 <Ellipse Grid.ColumnSpan="2"
                                                          HorizontalAlignment="Center"
                                                          Stroke="Transparent"
-                                                         Height="10"
-                                                         Width="10"
+                                                         Height="14"
+                                                         Width="14"
                                                          Fill="{DynamicResource BallColor}">
                                                     <Ellipse.Visibility>
                                                         <MultiBinding Converter="{StaticResource IsProgressedConverter}"
