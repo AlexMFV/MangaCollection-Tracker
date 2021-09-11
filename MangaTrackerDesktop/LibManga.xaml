@@ -13,12 +13,13 @@
         <Image HorizontalAlignment="Left" Width="96" Stretch="Fill" Margin="10,294,0,0" Height="103" VerticalAlignment="Top"/>
         <TextBlock Text="Manga Name" Height="32" Margin="117,294,10,0" VerticalAlignment="Top"/>
         <TabControl Margin="10,10,10,45">
-            <TabItem x:Name="tabStats"  BorderBrush="AntiqueWhite" IsSelected="True">
+            <TabItem x:Name="tabStats"  BorderBrush="AntiqueWhite">
                 <TabItem.Header>
                     <TextBlock Text="Stats" FontWeight="Bold" FontSize="20" MouseEnter="TabItem_MouseEnter" MouseLeave="TabItem_MouseLeave"/>
                 </TabItem.Header>
+                <Label FontSize="55" Content="Coming soon!" FontFamily="Cambria" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
             </TabItem>
-            <TabItem x:Name="tabVolumes" BorderBrush="AntiqueWhite">
+            <TabItem x:Name="tabVolumes" IsSelected="True" BorderBrush="AntiqueWhite">
                 <TabItem.Header>
                     <TextBlock Text="Volumes" FontWeight="Bold" FontSize="20" MouseEnter="TabItem_MouseEnter" MouseLeave="TabItem_MouseLeave"/>
                 </TabItem.Header>
@@ -45,13 +46,13 @@
                 <Grid IsVisibleChanged="Grid_IsVisibleChanged">
                     <ListView x:Name="lstVolPrices" SelectionChanged="lstVolPrices_SelectionChanged" SelectionMode="Single" BorderBrush="DodgerBlue" BorderThickness="1" Margin="0,10,404,0"/>
                     <Label Content="Volume Price" Height="32" FontSize="14" Margin="0,11,289,0" HorizontalAlignment="Right" Width="100" VerticalAlignment="Top"/>
-                    <mah:NumericUpDown x:Name="txtPrice" KeyDown="txt_KeyDown" FontSize="16" TextAlignment="Left" Height="30" Width="150" Margin="0,43,239,0" Minimum="0" Maximum="9999999999" Interval="0.1" Value="0" StringFormat="€ 0.00" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>
+                    <mah:NumericUpDown x:Name="txtPrice" LostFocus="txt_LostFocus" KeyDown="txt_KeyDown" FontSize="16" TextAlignment="Left" Height="30" Width="150" Margin="0,43,239,0" Minimum="0" Maximum="9999999999" Interval="0.1" Value="0" StringFormat="€ 0.00" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>
                     <Label Content="Shipping Price" FontSize="14" Height="32" Margin="0,11,75,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top"/>
-                    <mah:NumericUpDown x:Name="txtShip" FontSize="16" KeyDown="txt_KeyDown" TextAlignment="Left"  Height="30" Width="150" Margin="0,43,75,0" Minimum="0" Maximum="9999999999" Interval="0.1" Value="0" StringFormat="€ 0.00" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>
+                    <mah:NumericUpDown x:Name="txtShip" LostFocus="txt_LostFocus" FontSize="16" KeyDown="txt_KeyDown" TextAlignment="Left"  Height="30" Width="150" Margin="0,43,75,0" Minimum="0" Maximum="9999999999" Interval="0.1" Value="0" StringFormat="€ 0.00" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>
                     <Label Content="Additional Costs" FontSize="14" Height="32" Margin="0,87,239,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top"></Label>
-                    <mah:NumericUpDown x:Name="txtCosts" FontSize="16" KeyDown="txt_KeyDown" TextAlignment="Left"  Height="30" Width="150" Margin="0,119,239,0" Minimum="0" Maximum="9999999999" Interval="0.1" Value="0" StringFormat="€ 0.00" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>
-                    <Calendar x:Name="calBuy" Height="200" Width="180" Margin="0,202,209,0" HorizontalAlignment="Right" VerticalAlignment="Top"></Calendar>
-                    <Calendar x:Name="calArrive" HorizontalAlignment="Right" Height="200" Width="180" Margin="0,202,0,0" VerticalAlignment="Top"></Calendar>
+                    <mah:NumericUpDown x:Name="txtCosts" FontSize="16" LostFocus="txt_LostFocus" KeyDown="txt_KeyDown" TextAlignment="Left"  Height="30" Width="150" Margin="0,119,239,0" Minimum="0" Maximum="9999999999" Interval="0.1" Value="0" StringFormat="€ 0.00" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top"/>
+                    <Calendar x:Name="calBuy" Height="200" Width="180" LostFocus="txt_LostFocus" Margin="0,202,209,0" HorizontalAlignment="Right" VerticalAlignment="Top"></Calendar>
+                    <Calendar x:Name="calArrive" HorizontalAlignment="Right" LostFocus="txt_LostFocus" Height="200" Width="180" Margin="0,202,0,0" VerticalAlignment="Top"></Calendar>
                     <Label Content="Buy Date" FontSize="14" Height="32" Margin="0,179,239,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top"/>
                     <Label Content="Arrival Date" FontSize="14" Height="32" Margin="0,179,30,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top"/>
                     <Label Content="Volume Status: " FontSize="18" Height="32" Margin="0,439,239,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top"/>

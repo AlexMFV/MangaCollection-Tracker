@@ -337,10 +337,10 @@ namespace MangaTrackerDesktop
             {
                 if (lstVolReleases.SelectedItems.Count > 1)
                 {
-                    if (cbbStatus.SelectedIndex != 0)
+                    if (cbbStatus.SelectedIndex != -1)
                     {
                         noise = true;
-                        cbbStatus.SelectedIndex = 0;
+                        cbbStatus.SelectedIndex = -1;
                     }
                 }
                 else
@@ -365,6 +365,22 @@ namespace MangaTrackerDesktop
                         }
                     }
                 }
+            }
+        }
+
+        private void txt_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (lstVolPrices.SelectedItems.Count > 0)
+            {
+                int idx = vols.GetIndex((int)((ListViewItem)lstVolPrices.SelectedItem).Tag);
+
+                vols[idx].VolPrice = (double)txtPrice.Value;
+                vols[idx].ShipPrice = (double)txtShip.Value;
+                vols[idx].AddCosts = (double)txtCosts.Value;
+                vols[idx].BuyDate = (DateTime)calBuy.SelectedDate;
+                vols[idx].ArrivalDate = (DateTime)calArrive.SelectedDate;
+
+                Cache.SaveVolumeInfos(vols, manga.Id);
             }
         }
     }

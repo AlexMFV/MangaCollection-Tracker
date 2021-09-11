@@ -66,6 +66,14 @@ namespace MangaTrackerDesktop
             return ((Volumes)List).ToList().FirstOrDefault(x => x.Id == _id);
         }
 
+        public int GetIndex(int id)
+        {
+            for (int i = 0; i < List.Count; i++)
+                if (((Volume)List[i]).Id == id)
+                    return i;
+            return -1;
+        }
+
         public Volume this[int index]
         {
             get { return (Volume)List[index]; }
