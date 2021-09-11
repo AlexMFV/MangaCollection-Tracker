@@ -15,6 +15,42 @@ namespace MangaTrackerDesktop
 {
     class Cache
     {
+        public static double CalculateCollectionPrice()
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "volumesDB");
+            Volumes collection = new Volumes();
+
+            double value = 0;
+
+            if (Directory.Exists(cacheDir))
+            {
+                if (Directory.GetFiles(cacheDir).Length > 0)
+                {
+                    //Get all the files inside the directory
+                    foreach (string file in Directory.GetFiles(cacheDir, "vols*"))
+                    {
+                        string content = File.ReadAllText(file);
+                        if (content != "")
+                        {
+                            JArray arr = JArray.Parse(content);
+
+                            foreach (JObject obj in arr)
+                            {
+                                if(obj.Property("status").Value.ToString() != Status.none)
+                                {
+                                    value += double.Parse(obj.Property("price").Value.ToString());
+                                    value += double.Parse(obj.Property("shipping").Value.ToString());
+                                    value += double.Parse(obj.Property("costs").Value.ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return value;
+        }
+
         public static void SaveMangaListPartitioned(List<Mangas> mangaCol)
         {
             string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker", "mangaDB");

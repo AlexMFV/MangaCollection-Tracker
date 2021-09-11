@@ -88,5 +88,10 @@ namespace MangaTrackerDesktop
                 lstLibrary.SelectedIndex = idx;
             }
         }
+
+        private void btnUpdateValue_Click(object sender, RoutedEventArgs e)
+        {
+            lblColVal.Content = "Collection Value: " + Math.Round(Cache.CalculateCollectionPrice(), 2) + "€";
+        }
     }
 }

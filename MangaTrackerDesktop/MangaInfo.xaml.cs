@@ -54,7 +54,8 @@ namespace MangaTrackerDesktop
         {
             if (manga != null)
             {
-                imgImage.Source = new BitmapImage(new Uri(manga.ImgURL));
+                if(manga.ImgURL != "")
+                    imgImage.Source = new BitmapImage(new Uri(manga.ImgURL));
                 lblTitle.Content = manga.Name;
                 lblType.Content = $"Type: {manga.Type}";
                 lblJpnName.Content = $"Original Name: {manga.JpTitle}";
