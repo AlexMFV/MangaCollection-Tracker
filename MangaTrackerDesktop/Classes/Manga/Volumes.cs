@@ -61,6 +61,16 @@ namespace MangaTrackerDesktop
             }
         }
 
+        public int GetOwnedSCVolumes()
+        {
+            int aux = 0;
+            foreach(Volume vol in List)
+            {
+                if (vol.Status == Status.owned && vol.Type == "GN")
+                    aux++;
+            }
+            return aux;
+        }
         public Volume GetByID(int _id)
         {
             return ((Volumes)List).ToList().FirstOrDefault(x => x.Id == _id);

@@ -43,7 +43,7 @@
     </Page.Resources>
     <Grid>        
         <Button x:Name="btnBack" Click="btnBack_Click" Width="80" Height="30" Margin="8,8,0,0" Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <ListBox ItemContainerStyle="{DynamicResource _cardListBox}" x:Name="lstLibrary" MouseDoubleClick="lstLibrary_MouseDoubleClick" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" BorderBrush="White" BorderThickness="1" Margin="10,50,10,8" Grid.Column="0">
+        <ListBox ItemContainerStyle="{DynamicResource _cardListBox}" IsVisibleChanged="lstLibrary_IsVisibleChanged" x:Name="lstLibrary" MouseDoubleClick="lstLibrary_MouseDoubleClick" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" BorderBrush="White" BorderThickness="1" Margin="10,50,10,8" Grid.Column="0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="4" HorizontalAlignment="Center"/>

@@ -73,5 +73,20 @@ namespace MangaTrackerDesktop
             if (lstLibrary.SelectedIndex != -1)
                 this.frame.Content = new LibManga(this.frame.Content, this.frame, Globals.FAVMANGAS_LIST[lstLibrary.SelectedIndex]);
         }
+
+        private void lstLibrary_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.OldValue == false && (bool)e.NewValue == true)
+            {
+                int idx = -1;
+                
+                if (lstLibrary.SelectedItems.Count > 0)
+                    idx = lstLibrary.SelectedIndex;
+
+                lstLibrary.ItemsSource = null;
+                lstLibrary.ItemsSource = Globals.FAVMANGAS_LIST;
+                lstLibrary.SelectedIndex = idx;
+            }
+        }
     }
 }

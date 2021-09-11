@@ -135,6 +135,7 @@ namespace MangaTrackerDesktop
                             manga.Title = obj.Property("title").Value.ToString();
                             manga.TitleTrimmed = obj.Property("titleTrimmed").Value.ToString();
                             manga.Volumes = int.Parse(obj.Property("volumes").Value.ToString());
+                            manga.Main_volumes = int.Parse(obj.Property("mainVolumes").Value.ToString());
                             manga.Volumes_owned = int.Parse(obj.Property("volumesOwned").Value.ToString());
                             manga.Volume_stat = obj.Property("volumeStat").Value.ToString();
                             manga.Rating = double.Parse(obj.Property("rating").Value.ToString());
@@ -205,6 +206,7 @@ namespace MangaTrackerDesktop
                     obj.Add("buy", vol.BuyDate);
                     obj.Add("arrival", vol.ArrivalDate);
                     obj.Add("status", vol.Status);
+                    obj.Add("type", vol.Type);
 
                     arr.Add(obj);
                 }
@@ -242,6 +244,7 @@ namespace MangaTrackerDesktop
                                 vol.BuyDate = DateTime.Parse(obj.Property("buy").Value.ToString());
                                 vol.ArrivalDate = DateTime.Parse(obj.Property("arrival").Value.ToString());
                                 vol.Status = obj.Property("status").Value.ToString();
+                                vol.Type = obj.Property("type").Value.ToString();
                                 collection.Add(vol);
                             }
                         }

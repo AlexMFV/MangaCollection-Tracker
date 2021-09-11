@@ -176,31 +176,53 @@ namespace MangaTrackerDesktop
                     foreach (ListViewItem item in lstVolReleases.SelectedItems)
                     {
                         ChangeColor(item);
+                        Release rel = m.Releases.GetByID((int)item.Tag);
                         if (!vols.Contains((int)item.Tag))
                         {
-                            Release rel = m.Releases.GetByID((int)item.Tag);
                             Volume vol = new Volume();
                             vol.Id = rel.Id;
                             vol.Status = (string)cbbStatus.SelectedItem;
+                            vol.Type = GetVolumeType(rel);
                             vols.Add(vol);
                         }
                         else
                         {
                             Volume vol = vols.GetByID((int)item.Tag);
                             vol.Status = (string)cbbStatus.SelectedItem;
+                            vol.Type = GetVolumeType(rel);
                             vols.Update(vol);
                         }
                     }
 
                     UpdateProgressBarStatus((string)cbbStatus.SelectedValue);
 
+                    manga.Volumes_owned = vols.GetOwnedSCVolumes();
+
                     Cache.SaveVolumeInfos(vols, manga.Id);
+                    Cache.SaveFavManga(manga);
                     //lstVolReleases.SelectedItems.Clear();
                     //cbbStatus.SelectedIndex = 0;
                 }
             }
             
             noise = false;
+        }
+
+        public string GetVolumeType(Release rel)
+        {
+            if (rel.IsBS)
+                return "BS";
+
+            if (rel.IsGN)
+                return "GN";
+
+            if (rel.IsHC)
+                return "HC";
+
+            if (rel.IsOB)
+                return "OB";
+
+            return "Other";
         }
 
         public void UpdateProgressBarStatus(string status)

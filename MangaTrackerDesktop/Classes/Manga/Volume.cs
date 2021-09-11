@@ -15,6 +15,7 @@ namespace MangaTrackerDesktop
         private DateTime buyDate;
         private DateTime arrivalDate;
         private string status;
+        private string type; //Type of book (softcover, hardcover, omnibus, boxset)
 
         public Volume()
         {
@@ -28,6 +29,7 @@ namespace MangaTrackerDesktop
         public DateTime BuyDate { get => buyDate; set => buyDate = value; }
         public DateTime ArrivalDate { get => arrivalDate; set => arrivalDate = value; }
         public string Status { get => status; set => status = value; }
+        public string Type { get => type; set => type = value; }
         //Eventually add bought from {url}
     }
 }

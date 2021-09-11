@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace MangaTrackerDesktop
 {
     public class FavManga
     {
+
         private int id;
         private string title;
         private string titleTrimmed;
@@ -45,7 +47,7 @@ namespace MangaTrackerDesktop
         public int Volumes { get => volumes; set => volumes = value; }
         public int Volumes_owned { get => volumes_owned; set => volumes_owned = value; }
         public string Image { get => image; set => image = value; }
-        public string Volume_stat { get => volume_stat; set => volume_stat = value; }
+        public string Volume_stat { get => $"{this.volumes_owned} / {this.main_volumes} volumes"; set => volume_stat = $"{this.volumes_owned} / {this.main_volumes} volumes"; }
         public string TitleTrimmed { get => titleTrimmed; set => titleTrimmed = value; }
         public int Main_volumes { get => main_volumes; set => main_volumes = value; }
         public double Rating { get => rating; set => rating = value; }
