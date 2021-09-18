@@ -31,6 +31,8 @@ namespace MangaTrackerDesktop
 
             if(Globals.FAVMANGAS_LIST.Count > 0)
                 lstLibrary.ItemsSource = Globals.FAVMANGAS_LIST;
+
+            lblColVal.Content = "Collection Value: " + Math.Round(Cache.CalculateCollectionPrice(), 2) + "€";
         }
 
         public ImageSource GetIMG(string url)
@@ -91,7 +93,6 @@ namespace MangaTrackerDesktop
 
         private void btnUpdateValue_Click(object sender, RoutedEventArgs e)
         {
-            lblColVal.Content = "Collection Value: " + Math.Round(Cache.CalculateCollectionPrice(), 2) + "€";
         }
     }
 }
