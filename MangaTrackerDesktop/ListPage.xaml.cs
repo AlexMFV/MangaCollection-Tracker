@@ -35,10 +35,8 @@ namespace MangaTrackerDesktop
 
         async public void InitialSteps()
         {
-            if (Cache.isDBCorrupted())
-            {
+            if (!Cache.isDBCorrupted())
                 await DatabaseFullReindex();
-            }
 
             FillListWithMangas(0);
             FillPagesLabel();
@@ -58,9 +56,11 @@ namespace MangaTrackerDesktop
 
             if (res == MessageBoxResult.OK)
             {
-                //Loading Screen
-
-                string fullDatabase = "https://www.animenewsnetwork.com/encyclopedia/reports.xml?id=155&type=manga&nlist=all";
+                List<Tuple<string, WebsiteType, string>> fullDatabase = new List<Tuple<string, WebsiteType, string>>() {
+                    new Tuple<string, WebsiteType, string>("https://www.animenewsnetwork.com/encyclopedia/reports.xml?id=155&type=manga&nlist=all", WebsiteType.AnimeNewsNetwork, Cache.GetTokenByWebsite(WebsiteType.AnimeNewsNetwork)),
+                    new Tuple<string, WebsiteType, string>($"https://api.myanimelist.net/v2/manga?q=berserk", WebsiteType.MyAnimeList, Cache.GetTokenByWebsite(WebsiteType.MyAnimeList)),
+                };
+                
                 Mangas fullDB = API.RequestAPIMangas(fullDatabase);
                 List<Manga> mangaList = fullDB.ToList().OrderBy(x => x.Id).ToList();
 

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MangaTrackerDesktop
 {
-    public class Author
+    public enum WebsiteType
     {
-        public string _id;
-        public string _name;
-        public string _task; //Position the author takes (Story / Art / Storyboard, etc)
+        AnimeNewsNetwork,
+        MyAnimeList,
+        AniDB,
+        None
     }
 }

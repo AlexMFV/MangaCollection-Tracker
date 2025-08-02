@@ -462,6 +462,32 @@ namespace MangaTrackerDesktop
             return -1;
         }
 
+        public static string GetTokenByWebsite(WebsiteType type)
+        {
+            string cacheDir = Path.Combine(Globals.APPDATA_DIR, "alexmfv", "mangaTracker");
+
+            if (!Directory.Exists(cacheDir))
+                Directory.CreateDirectory(cacheDir);
+
+            string file = "";
+
+            if(type == WebsiteType.MyAnimeList)
+                file = cacheDir + "\\MALToken.json";
+
+            if (File.Exists(file))
+            {
+                string content = File.ReadAllText(file);
+                if (content != "")
+                {
+                    JObject obj = JObject.Parse(content);
+                    string value = obj.Property("token").Value.ToString();
+                    return value;
+                }
+            }
+
+            return "";
+        }
+
         public static void LoadOrderedDB()
         {
             Globals.ALL_MANGAS = OrderMangasByName(LoadMangaList());

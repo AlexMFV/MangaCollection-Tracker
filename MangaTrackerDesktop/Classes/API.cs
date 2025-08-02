@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using System.Windows.Automation;
 using System.Xml;
 
 namespace MangaTrackerDesktop
@@ -20,18 +25,39 @@ namespace MangaTrackerDesktop
         static Releases releases;
         static Release release;
 
-        public static Mangas RequestAPIMangas(string _url)
+        public static Mangas RequestAPIMangas(List<Tuple<string, WebsiteType, string>> _urls)
         {
-            XmlTextReader reader = new XmlTextReader(_url);
-
-            while (reader.Read())
+            foreach (Tuple<string,WebsiteType, string> result in _urls)
             {
-                switch (reader.NodeType)
+                if (result.Item2 == WebsiteType.None || result.Item2 == WebsiteType.AnimeNewsNetwork)
                 {
-                    case XmlNodeType.Element: ProcessCommonXML(reader.Name); continue;
-                    case XmlNodeType.Text: AddMangaCommon(reader.Value); break;
-                    case XmlNodeType.EndElement: ResumeOps(reader.Name); break;
-                    default: write = false; break;
+                    XmlTextReader reader = new XmlTextReader(result.Item1);
+
+                    while (reader.Read())
+                    {
+                        switch (reader.NodeType)
+                        {
+                            case XmlNodeType.Element: ProcessCommonXML(reader.Name); continue;
+                            case XmlNodeType.Text: AddMangaCommon(reader.Value); break;
+                            case XmlNodeType.EndElement: ResumeOps(reader.Name); break;
+                            default: write = false; break;
+                        }
+                    }
+                }
+
+                if (result.Item2 == WebsiteType.MyAnimeList) {
+
+                    HttpClient client = new HttpClient();
+
+                    HttpRequestMessage request = new HttpRequestMessage()
+                    {
+                        RequestUri = new Uri(result.Item1),
+                        Method = HttpMethod.Get
+                    };
+                    
+                    request.Headers.Add("X-MAL-CLIENT-ID", result.Item3);
+
+                    string content = client.SendAsync(request).Result.Content.ReadAsStringAsync().Result;
                 }
             }
 
